@@ -369,7 +369,7 @@ class FuzzyNeuroNetwork(object):
                     if len(raw) <= 10:
                         for line in raw:
                             if len(line) <= 10:
-                                FCLogger.debug('    ' + line)
+                                FCLogger.debug('    ' + str(line))
 
                             else:
                                 FCLogger.debug('    [{}, {}, ..., {}, {}]'.format(line[0], line[1], line[-2], line[-1]))
