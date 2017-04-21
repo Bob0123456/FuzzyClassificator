@@ -175,7 +175,7 @@ This is default file with data set for classifying. This file contains tab-delim
 
 *Example:*
 
-    input1  input2  input3
+    input1  input2  input3  1st_class_output  2nd_class_output
     0.12    0.32    Min
     0.32    0.35    Low
     0.54    0.57    Med
