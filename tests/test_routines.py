@@ -8,7 +8,7 @@ class TestBaseMethods():
 
     @pytest.fixture(scope='class', autouse=True)
     def init(self):
-        pass
+        FuzzyRoutines.FCLogger.level = 50  # Disable debug logging while test, logger CRITICAL = 50
 
     def test_DiapasonParser(self, capsys):
         # positive tests
