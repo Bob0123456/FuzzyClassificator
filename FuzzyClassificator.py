@@ -510,7 +510,10 @@ def ClassifyingMode(**inputParameters):
     return successFinish
 
 
-if __name__ == "__main__":
+def Main():
+    """
+    Main function for setuptools routines.
+    """
     args = ParseArgsMain()  # get and parse command-line parameters
     exitCode = 0
 
@@ -570,3 +573,7 @@ if __name__ == "__main__":
 
         DisableLogger(fileLogHandler)
         sys.exit(exitCode)
+
+
+if __name__ == "__main__":
+    Main()
