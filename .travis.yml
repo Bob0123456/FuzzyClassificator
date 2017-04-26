@@ -4,9 +4,10 @@ branches:
   only:
   - master
   - develop
-install: "pip install pytest"
+install:
+  - pip install pytest
 script:
-  - pytest -k tests
+  - echo "Preparing to deploy..."
 deploy:
   provider: pypi
   user: tim55667757
@@ -17,4 +18,8 @@ deploy:
   on:
     all_branches: true
 after_script:
-  - echo "deploy to PyPI finished"
+  - echo "Deploy to PyPI finished."
+  - echo "Testing last version..."
+  - pip install FuzzyClassificator --upgrade
+  - ls -la
+  - pytest -k tests
