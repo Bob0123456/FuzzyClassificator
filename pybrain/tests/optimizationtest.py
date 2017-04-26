@@ -37,11 +37,11 @@ from pybrain.structure.modules.module import Module
 
 # Tasks to be optimized:
 # ----------------------
+def SimpleFunction():
+    return lambda x: -sum((x + 1) ** 2)
 
-# simple function
-sf = lambda x:-sum((x + 1) ** 2)
-# FunctionEnvironment class
-fe = SphereFunction
+sf = SimpleFunction()  # Simple Function
+fe = SphereFunction  # FunctionEnvironment class
 # initialized FE
 ife1 = fe(1)
 ife2 = fe(2)
@@ -49,8 +49,13 @@ ife100 = fe(100)
 # a Task object
 task = BalanceTask()
 task.N = 10
+
+
+def EvoEval():
+    return lambda e: e.x
+
 # for the simple evolvable class defined below
-evoEval = lambda e: e.x
+evoEval = EvoEval()
 
 
 # starting points
@@ -227,7 +232,7 @@ def testAll(tests, allalgos, tolerant=True):
         for t in tests:
             try:
                 res = t(algo)
-            except Exception, e:
+            except Exception as e:
                 if not tolerant:
                     raise e
                 res = e
