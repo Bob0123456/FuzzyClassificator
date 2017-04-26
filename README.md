@@ -1,8 +1,12 @@
 FuzzyClassificator
 ==================
 
-This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
+[![FuzzyClassificator build status](https://travis-ci.org/devopshq/FuzzyClassificator.svg?branch=develop)](https://travis-ci.org/devopshq/FuzzyClassificator) [![FuzzyClassificator code quality](https://api.codacy.com/project/badge/Grade/f1511115ad144614915fc5767029e2d9)](https://www.codacy.com/app/tim55667757/FuzzyClassificator/dashboard) [![Documentation Status](https://readthedocs.org/projects/fuzzyclassificator/badge/?version=latest)](http://fuzzyclassificator.readthedocs.io/en/latest/?badge=latest)
+    
+Introduction
+--------------
 
+This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
 
 How to use
 --------------
