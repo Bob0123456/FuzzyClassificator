@@ -75,7 +75,7 @@ class MinHash(object):
         The number of buckets is dim * nPermutations."""
         self.dim = dim
         self.permutations = array([permutation(dim)
-                                   for _ in xrange(nPermutations)])
+                                   for _ in range(nPermutations)])
 
         self.buckets = defaultdict(lambda: [])
 
