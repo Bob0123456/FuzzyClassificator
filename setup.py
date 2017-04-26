@@ -3,6 +3,9 @@
 
 
 from setuptools import setup
+import pytest
+
+pytest.cmdline.main(["-k", "tests"])  # run all unit tests before building FuzzyClassificator
 
 setup(
     name='FuzzyClassificator',
