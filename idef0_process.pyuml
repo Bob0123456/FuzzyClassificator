@@ -1,0 +1,28 @@
+@startuml
+node GITLAB #Green {
+    agent "1. Создайте новый подпроект во внутреннем GitLab-е в проекте extlibs (Developer)" as one
+}
+node "GITHUB, BITBUCKET, ..." as GITHUB #Green {
+    agent "2. Положите сорцы из внешнего репозитория \n в созданный проект на внутреннем GitLab-е (Developer)" as two
+}
+node GITLAB as GITLAB2 #Green {
+    agent "3. Добавьте build-on-server(.sh|.cmd|.bat|.py) \n в корень любой отладочной ветки (Developer) \n (пример этих скриптов можно запросить у DevOps)" as build
+}
+node TeamCity as TC1 #DodgerBlue {
+    agent "4. Напишите заявку на devops-helpdesk@ (Developer) \n для добавления проекта в TeamCity (DevOps)" as Request
+}
+node TeamCity as TC2 #Green {
+    agent "5. Отладьте сборку до появления нужного \n пакета в artifactory (Developer)" as Debug
+}
+database "ARTIFACTORY .snapshot-repository" as ARTIFACTORY #Green {
+   package Packages [
+   Для extlibs поддерживаются типы пакетов: .zip|.tar.gz|.nupkg|.deb
+   ]
+}
+one -> two
+two -> build
+build -> Request
+Request -> Debug
+Debug -> Packages
+
+@enduml
