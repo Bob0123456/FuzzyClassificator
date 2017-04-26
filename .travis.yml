@@ -1,0 +1,19 @@
+language: python
+python: '3.6.0'
+branches:
+  only:
+  - master
+  - develop
+script:
+  - pytest .
+deploy:
+  provider: pypi
+  user: tim55667757
+  password:
+    secure: "JCv+sgQ8fbgueuEWMzAbR56ije0dSGgYsi4l3R1khjmshJf7hQc+dRJ08vG+WDSR0hO8dEJK+DaqeP3zig18R6C7Z2V+hnjJeMXVkFDZCYwqN+KTWrvlH2dQy2NFEZK34k7iHy6buatm4QX1dnpbZaXobPukXvBoeZ0mXbG9NZm5aRG1oHLp8B7z5sX8E5mIuXRfNpj0pcXhWkqq/X2GiRH7xp7KgZw4AzWSCEMCJec0ribbeKtTKTWyQ+F3Wv6BL2rIzXAZPjrebit08F8J6N6BTIQ85mP/AHXKdmD4F6kMjXEPypry2D/JNbJ5O8Opua6jQKKTXaiL6R6m6J43wq3lvxSTVpjMzWTphpnwGRPK3XyXXOsYvYOJn7Do6feDefk9EefSZOFTQ6TBhTtk1XzQ3iqq8gPKqLVdJoO3Ozk6mN1xOVAf21geOi07LxYlpGgZwQsEGmx4VP+wqwlaXomqgaKKZZ0/9yEExdWIZ2rlHurk3TR/IAGvoyOADkLyUltaFl0oIeXWWeqiunvFtiFLQRVVYkLL4wQPXliYuLsanKxf3ifExFHmYbVc6pAjAMCF5O76Kd8JbGLEtoqZF58Za10Pl86ZNFgkgEXDqig34biU9bQ7Eal/kWmnxLQflDC7vbZe7udLbqoxqe8PHy+I+xfpJVFy1WzLracQrDE="
+  distributions: sdist bdist_wheel
+  skip_cleanup: true
+  on:
+    all_branches: true
+after_script:
+  - echo "deploy to PyPI finished"
