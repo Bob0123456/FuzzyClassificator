@@ -1,11 +1,12 @@
 language: python
-python: '3.6.0'
+python: '3.6'
 branches:
   only:
   - master
   - develop
+install: "pip install pytest"
 script:
-  - pytest .
+  - pytest -k tests
 deploy:
   provider: pypi
   user: tim55667757
