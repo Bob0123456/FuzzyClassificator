@@ -6,6 +6,8 @@ branches:
   - develop
 install:
   - pip install pytest
+script:
+  - ls -Rla
 deploy:
   provider: pypi
   user: tim55667757
