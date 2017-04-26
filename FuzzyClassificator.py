@@ -514,6 +514,19 @@ def Main():
     """
     Main function for setuptools routines.
     """
+    global ethalonsDataFile
+    global candidatesDataFile
+    global neuroNetworkFile
+    global reportDataFile
+    global bestNetworkFile
+    global bestNetworkInfoFile
+    global ignoreColumns
+    global ignoreRows
+    global sepSymbol
+    global noFuzzyOutput
+    global reloadNetworkFromFile
+    global epochsToUpdate
+
     args = ParseArgsMain()  # get and parse command-line parameters
     exitCode = 0
 
