@@ -278,12 +278,12 @@ class RlCompBenchmark(object):
         # and time.
         try:
             os.makedirs(self.benchmarkDir)
-        except OSError, e:
-            if not "File exists" in str(e):
+        except OSError as e:
+            if "File exists" not in str(e):
                 raise e
 
         for name, agent_klass in self.agents:
-            todo = xrange(self.loops)
+            todo = range(self.loops)
             if not self.overwrite:
                 # If overwrite is set to false, we will only do the experiments
                 # that have not been done.

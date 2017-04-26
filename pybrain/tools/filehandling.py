@@ -1,13 +1,13 @@
-__author__ = 'Tom Schaul, tom@idsia.ch'
-
 import os
 import pickle
 
+__author__ = 'Tom Schaul, tom@idsia.ch'
 
-def getAllFilesIn(dir, tag='', extension='.pickle'):
+
+def getAllFilesIn(directory, tag='', extension='.pickle'):
     """ return a list of all filenames in the specified directory
     (with the given tag and/or extension). """
-    allfiles = os.listdir(dir)
+    allfiles = os.listdir(directory)
     res = []
     for f in allfiles:
         if f[-len(extension):] == extension and f[:len(tag)] == tag:
@@ -15,7 +15,7 @@ def getAllFilesIn(dir, tag='', extension='.pickle'):
     return res
 
 
-def selectSome(strings, requiredsubstrings=[], requireAll=True):
+def selectSome(strings, requiredsubstrings=list(), requireAll=True):
     """ Filter the list of strings to only contain those that have at least
     one of the required substrings. """
     if len(requiredsubstrings) == 0:
@@ -45,7 +45,8 @@ def pickleDumpDict(name, d):
         pickle.dump(d, f)
         f.close()
         return True
-    except Exception, e:
+
+    except Exception as e:
         print('Error writing into', name, ':', str(e))
         return False
 
@@ -56,9 +57,11 @@ def pickleReadDict(name):
         f = open(name + '.pickle')
         val = pickle.load(f)
         f.close()
-    except Exception, e:
+
+    except Exception as e:
         print('Nothing read from', name, ':', str(e))
         val = {}
+
     return val
 
 
@@ -72,5 +75,3 @@ def addToDictFile(name, key, data, verbose=False):
     pickleDumpDict(name, d)
     if verbose:
         print(':')
-
-

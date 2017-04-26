@@ -1,19 +1,18 @@
 #@Pydev CodeAnalysisIgnore
 
-__author__ = 'Tom Schaul, tom@idsia.ch'
-
 from scipy import array, sin, cos, randn
 import logging
-
 from pybrain.rl.environments.episodic import EpisodicTask
+
+__author__ = 'Tom Schaul, tom@idsia.ch'
 
 
 try:
     import cartpolewrap as impl
-except ImportError, e:
+
+except ImportError as e:
     logging.error("FastCartPoleTask is wrapping C code that needs to be compiled - it's simple: run .../cartpolecompile.py")
     raise e
-
 
 
 class FastCartPoleTask(EpisodicTask):
@@ -28,13 +27,15 @@ class FastCartPoleTask(EpisodicTask):
     extraRandoms = 0
 
     __single = None
+
     def __init__(self, numPoles=1, markov=True, verbose=False,
                  extraObservations=False, extraRandoms=0, maxSteps=100000):
         """ @extraObservations: if this flag is true, the observations include the Cartesian coordinates
         of the pole(s).
         """
-        if self.__single != None:
+        if self.__single is not None:
             raise Exception('Singleton class - there is already an instance around', self.__single)
+
         self.__single = self
         impl.init(markov, numPoles, maxSteps)
         self.markov = markov
