@@ -7,6 +7,7 @@ branches:
 install:
   - pip install pytest
 script:
+  - printenv
   - ls -la
 deploy:
   provider: pypi
@@ -14,7 +15,7 @@ deploy:
   skip_cleanup: true
   on:
     all_branches: true
-  user: Tim55667757
+  user: tim55667757
   password:
     secure: 0Yzi7FKDC957mwBpXz15ZZ1BEs2w/a1G32Im7h463ra9LlEskfyF6C0PuFYGZ84cBIbEsEKbwT1gFMrrQ//GruP/XW3AMI8YXPPOHelqmtHl3hqT7LWP7qhiFb1Ft6cZo6dEeV/Y1DX3PDJ5+stkPZCiR9pK9geB29Hk1LWJU1nSoEefRXkMZ7WuQKz7SRoK2QKQ57fQ4rmQ7Dg4TY4Q7NPxP8EvTVR3W9snTq+HBpEORahjkFVECJSjognmNLDjAl5mprJ6OZfydlWsR2933+2avByrxBa3g2B/xrJrnzAgfRKNoOFVPw9Iw3oMq57oHORbdU9mL1OLz3LABO/BY/LLDUBBNWKW2c9+3Tqc/t3CTvUXN36zWh086DUM4X86xof7+8bdKvTMBWy8IXLXgPG9rYu2B1vfocUV5lsbqA1l+7hGe5TmSKGn1apOYhd37xqm5LRciTWec1KeH7YOgso14WxYc7GPhwoWDz0jcN9VInrBjMbWe8uAohPR+rb+TSHAQIhowx2RJel9DxDpTIc+/XQSBP2EkIN2PvvWh6jROSCm5+IpxVHmO1iqezMH+TV/8dD40YFcj53DE6f8rItLHVt/bwNouRZmGMkv1ixU98inFUkybiJ+JHsIGDT3CpK/KfTRQCoD1UzOqc9n6XP4uzFUU+cVuCDSpmTRf6U=
 after_script:
