@@ -10,7 +10,7 @@ script:
   - ls -l
 deploy:
   provider: pypi
-  user: tim55667757
+  user: Tim55667757
   password:
     secure: "oMqOD15420uxHFnLBQVwDDOhBTTlTigKr31BZLGMuVGQk76qxRxUAnZz7c31RfShBbyt8+SmPPJvq0g4bt0CssaybpKjFHvd5lPa/TrK507YwmeQSCVs4ub/agPr+EVeaXKpk7JfLaesUz1P64mC4nUktNCnUgfPvXTcxyaBmmLR3KxreN952cTigdFMc52vpLK2Jn+AAdEQLQIQOJgi2LGFcocfJevn1YLfXuuQw5ZOo6+bJnxrEAAXZBTxShU0I5wn/AmbaWzhVTFiinZZJjQVTjGETSlzm7btxCjXeVi9OrQea2DTFYl9Gv05HjS4e8dyJkFMvhZZmbxY4R62jl3KEEf5N8R1uBPNUUeYf8dj671XVru3BnXMLTE6VSH2/aTbizVWrBK+VbLa614hblaI7J+ryMi0J16S/5MCWWbcnVNpheCTfCr7/3e9IcZWgCGWmRlY34Vyg7hXWTusQ4+j4x9GBcZy04cZ/Cdxl+3h8b/57cV80ZlmTSIXidd5v3/BBHs3eqdAyo5Lk6xZ6/4k11BPYXeGdoJlnexmpA0aFuYO6yFkOsnNJc+iwn1OKMH980CrTxdVP0Ci3WtS6NRIBhKc6VoSmerlnmkGyl6pCqWn17CIjZLDfkPS7bhlE/ZWa9oAw0clycTii2qEI11KHgjhBuVXvvcVsVfoYME="
   distributions: sdist bdist_wheel
