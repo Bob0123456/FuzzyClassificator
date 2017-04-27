@@ -1,0 +1,4 @@
+site_name: FuzzyClassificator
+pages:
+  - Home: README.md
+theme: readthedocs

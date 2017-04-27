@@ -7,7 +7,7 @@ branches:
 install:
   - pip install pytest
 script:
-  - ls -Rl
+  - ls -l
 deploy:
   provider: pypi
   user: tim55667757
