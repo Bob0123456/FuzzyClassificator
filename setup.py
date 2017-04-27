@@ -4,13 +4,34 @@
 
 from setuptools import setup
 import pytest
+import os
+
+__version__ = '1.2'  # identify main version of FuzzyClassificator
+
+if 'TRAVIS_BUILD_NUMBER' in os.environ and 'TRAVIS_BRANCH' in os.environ:
+    print("This is TRAVIS-CI build")
+    print("TRAVIS_BUILD_NUMBER = {}".format(os.environ['TRAVIS_BUILD_NUMBER']))
+    print("TRAVIS_BRANCH = {}".format(os.environ['TRAVIS_BRANCH']))
+
+    __version__ += '.{}{}'.format(
+        '' if 'release' in os.environ['TRAVIS_BRANCH'] or os.environ['TRAVIS_BRANCH'] == 'master' else 'dev',
+        os.environ['TRAVIS_BUILD_NUMBER'],
+    )
+
+else:
+    print("This is local build")
+    __version__ += '.localbuild'  # set version as major.minor.localbuild if local build: python setup.py install
+
+print("FuzzyClassificator build version = {}".format(__version__))
+
 
 pytest.cmdline.main(["-k", "tests"])  # run all unit tests before building FuzzyClassificator
+
 
 setup(
     name='FuzzyClassificator',
 
-    version='1.2',
+    version=__version__,
 
     description='This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results.',
 
