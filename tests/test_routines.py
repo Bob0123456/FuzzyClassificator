@@ -42,3 +42,26 @@ class TestBaseMethods():
         assert FuzzyRoutines.IsCorrectFuzzyNumberValue('False') is False
         assert FuzzyRoutines.IsCorrectFuzzyNumberValue([]) is False
         assert FuzzyRoutines.IsCorrectFuzzyNumberValue(self) is False
+
+    def test_FuzzyNOT(self):
+        # positive tests
+        assert FuzzyRoutines.FuzzyNOT(0.) == 1.
+        assert FuzzyRoutines.FuzzyNOT(1.) == 0.
+        assert FuzzyRoutines.FuzzyNOT(0.25, alpha=0.) == 0.25  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(0.25, alpha=0.25) == 0.25
+        assert FuzzyRoutines.FuzzyNOT(0.25, alpha=0.75) == 0.9166666666666666
+        assert FuzzyRoutines.FuzzyNOT(0.25, alpha=1) == 1.
+        assert FuzzyRoutines.FuzzyNOT(0., alpha=0) == 0.  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(0., alpha=1) == 1.
+        assert FuzzyRoutines.FuzzyNOT(1., alpha=0) == 1.  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(1., alpha=1) == 1.
+
+        # negative tests
+        assert FuzzyRoutines.FuzzyNOT(1.1) == 1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(-1.1) == -1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(1.1, alpha=0.) == 1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(1.1, alpha=0.25) == 1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(1.1, alpha=1) == 1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=0.) == -1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=0.25) == -1.1  # an exception (return self fuzzyNumber)
+        assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=1) == -1.1  # an exception (return self fuzzyNumber)
