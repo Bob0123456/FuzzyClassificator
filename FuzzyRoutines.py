@@ -784,36 +784,36 @@ class UniversalFuzzyScale(FuzzyScale):
 
 
 if __name__ == "__main__":
-    ## Some examples (just run this FuzzyRoutines module):
+    # Some examples (just run this FuzzyRoutines module):
 
-    ## --- Usage of some membership functions (uncomment one of them):
+    # --- Usage of some membership functions (uncomment one of them):
 
-    #mjuPars = {'a': 7, 'b': 4, 'c': 0}  # hyperbolic params example
-    #funct = MFunction(userFunc='hyperbolic', **mjuPars)  # creating instance of hyperbolic function
+    # mjuPars = {'a': 7, 'b': 4, 'c': 0}  # hyperbolic params example
+    # funct = MFunction(userFunc='hyperbolic', **mjuPars)  # creating instance of hyperbolic function
 
-    #mjuPars = {'a': 0, 'b': 0.3, 'c': 0.4}  # bell params example
-    #funct = MFunction(userFunc='bell', **mjuPars)  # creating instance of bell function
+    # mjuPars = {'a': 0, 'b': 0.3, 'c': 0.4}  # bell params example
+    # funct = MFunction(userFunc='bell', **mjuPars)  # creating instance of bell function
 
-    #mjuPars = {'a': 0, 'b': 1}  # parabolic params example
-    #funct = MFunction(userFunc='parabolic', **mjuPars)  # creating instance of parabolic function
+    # mjuPars = {'a': 0, 'b': 1}  # parabolic params example
+    # funct = MFunction(userFunc='parabolic', **mjuPars)  # creating instance of parabolic function
 
-    #mjuPars = {'a': 0.2, 'b': 0.8, 'c': 0.7}  # triangle params example
-    #funct = MFunction(userFunc='triangle', **mjuPars)  # creating instance of triangle function
+    # mjuPars = {'a': 0.2, 'b': 0.8, 'c': 0.7}  # triangle params example
+    # funct = MFunction(userFunc='triangle', **mjuPars)  # creating instance of triangle function
 
     mjuPars = {'a': 0.1, 'b': 1, 'c': 0.5, 'd': 0.8}  # trapezium params example
     funct = MFunction(userFunc='trapezium', **mjuPars)  # creating instance of trapezium function
 
-    #mjuPars = {'a': 0.5, 'b': 0.15}  # exponential params example
-    #funct = MFunction(userFunc='exponential', **mjuPars)  # creating instance of exponential function
+    # mjuPars = {'a': 0.5, 'b': 0.15}  # exponential params example
+    # funct = MFunction(userFunc='exponential', **mjuPars)  # creating instance of exponential function
 
-    #mjuPars = {'a': 15, 'b': 0.5}  # sigmoidal params example
-    #funct = MFunction(userFunc='sigmoidal', **mjuPars)  # creating instance of sigmoidal function
+    # mjuPars = {'a': 15, 'b': 0.5}  # sigmoidal params example
+    # funct = MFunction(userFunc='sigmoidal', **mjuPars)  # creating instance of sigmoidal function
 
-    #funct = MFunction(userFunc='desirability')  # creating instance of desirability function without parameters
+    # funct = MFunction(userFunc='desirability')  # creating instance of desirability function without parameters
 
     print('Printing Membership function with parameters: ', funct)
 
-    ## --- Calculating some function's values in [0, 1]:
+    # --- Calculating some function's values in [0, 1]:
 
     xPar = 0
     for i in range(0, 11, 1):
@@ -821,7 +821,7 @@ if __name__ == "__main__":
         res = funct.mju(xPar)  # calculate one value of MF with given parameters
         print('{} = {:1.4f}'.format(funct, res))
 
-    ## --- Work with fuzzy set:
+    # --- Work with fuzzy set:
 
     fuzzySet = FuzzySet(funct, (0., 1.))  # creating fuzzy set A = <mju_funct, support_set>
     print('Printing fuzzy set after init and before changes:', fuzzySet)
@@ -841,11 +841,11 @@ if __name__ == "__main__":
     print('New value of Defuz({}) = {:1.2f}'.format(fuzzySet.name, fuzzySet.Defuz()))
     print('Printing fuzzy set after changes:', fuzzySet)
 
-    ## --- Work with fuzzy scales:
-    ## Fuzzy scale is an ordered set of linguistic variables that looks like this:
-    ## S = [{'name': 'name_1', 'fSet': fuzzySet_1}, {'name': 'name_2', 'fSet': fuzzySet_2}, ...],
-    ##     where name is a linguistic name of fuzzy set,
-    ##     fSet is a user define fuzzy set of FuzzySet type.
+    # --- Work with fuzzy scales:
+    # Fuzzy scale is an ordered set of linguistic variables that looks like this:
+    # S = [{'name': 'name_1', 'fSet': fuzzySet_1}, {'name': 'name_2', 'fSet': fuzzySet_2}, ...],
+    #     where name is a linguistic name of fuzzy set,
+    #     fSet is a user define fuzzy set of FuzzySet type.
     scale = FuzzyScale()  # intialize new fuzzy scale with default levels
 
     print('Printing default fuzzy scale in human-readable:', scale)
@@ -880,8 +880,8 @@ if __name__ == "__main__":
     for item in scale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-    ## --- Work with Universal Fuzzy Scale:
-    ## Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
+    # --- Work with Universal Fuzzy Scale:
+    # Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
 
     uniFScale = UniversalFuzzyScale()
     print('Levels of Universal Fuzzy Scale:', uniFScale.levels)
@@ -891,7 +891,7 @@ if __name__ == "__main__":
     for item in uniFScale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-    ## Use Fuzzy() function to looking for level on Fuzzy Scale:
+    # Use Fuzzy() function to looking for level on Fuzzy Scale:
 
     xPar = 0
     for i in range(0, 10, 1):
@@ -899,7 +899,7 @@ if __name__ == "__main__":
         res = uniFScale.Fuzzy(xPar)  # calculate fuzzy level for some real values
         print('Fuzzy({:1.1f}, {}) = {}, {}'.format(xPar, uniFScale.name, res['name'], res['fSet']))
 
-    ## Finding fuzzy level using GetLevelByName() function:
+    # Finding fuzzy level using GetLevelByName() function:
 
     print('Finding level by name with exact matching:')
 
@@ -932,14 +932,14 @@ if __name__ == "__main__":
     res = uniFScale.GetLevelByName('Highest', exactMatching=False)
     print("GetLevelByName('Highest', {}) = {}, {}".format(uniFScale.name, res['name'] if res else 'None', res['fSet'] if res else 'None'))
 
-    ## --- Work with fuzzy logic operators:
+    # --- Work with fuzzy logic operators:
 
-    ## Checks that number is in [0, 1]:
+    # Checks that number is in [0, 1]:
 
     print('IsCorrectFuzzyNumberValue(0.5) =', IsCorrectFuzzyNumberValue(0.5))
     print('IsCorrectFuzzyNumberValue(1.1) =', IsCorrectFuzzyNumberValue(1.1))
 
-    ## Calculates result of fuzzy NOT, fuzzy NOT with alpha parameter and parabolic fuzzy NOT operations:
+    # Calculates result of fuzzy NOT, fuzzy NOT with alpha parameter and parabolic fuzzy NOT operations:
 
     print('FNOT(0.25) =', FuzzyNOT(0.25))
     print('FNOT(0.25, alpha=0.25) =', FuzzyNOT(0.25, alpha=0.25))
@@ -949,40 +949,40 @@ if __name__ == "__main__":
     print('FNOTParabolic(0.25, alpha=0.25) =', FuzzyNOTParabolic(0.25, alpha=0.25))
     print('FNOTParabolic(0.25, alpha=0.75) =', FuzzyNOTParabolic(0.25, alpha=0.75))
 
-    ## Calculates result of fuzzy AND/OR operations:
+    # Calculates result of fuzzy AND/OR operations:
 
     print('FuzzyAND(0.25, 0.5) =', FuzzyAND(0.25, 0.5))
     print('FuzzyOR(0.25, 0.5) =', FuzzyOR(0.25, 0.5))
 
-    ## Calculates result of T-Norm operations, where T-Norm is one of conjunctive operators - logic, algebraic, boundary, drastic:
+    # Calculates result of T-Norm operations, where T-Norm is one of conjunctive operators - logic, algebraic, boundary, drastic:
 
     print("TNorm(0.25, 0.5, 'logic') =", TNorm(0.25, 0.5, normType='logic'))
     print("TNorm(0.25, 0.5, 'algebraic') =", TNorm(0.25, 0.5, normType='algebraic'))
     print("TNorm(0.25, 0.5, 'boundary') =", TNorm(0.25, 0.5, normType='boundary'))
     print("TNorm(0.25, 0.5, 'drastic') =", TNorm(0.25, 0.5, normType='drastic'))
 
-    ## Calculates result of S-coNorm operations, where S-coNorm is one of disjunctive operators - logic, algebraic, boundary, drastic:
+    # Calculates result of S-coNorm operations, where S-coNorm is one of disjunctive operators - logic, algebraic, boundary, drastic:
 
     print("SCoNorm(0.25, 0.5, 'logic') =", SCoNorm(0.25, 0.5, normType='logic'))
     print("SCoNorm(0.25, 0.5, 'algebraic') =", SCoNorm(0.25, 0.5, normType='algebraic'))
     print("SCoNorm(0.25, 0.5, 'boundary') =", SCoNorm(0.25, 0.5, normType='boundary'))
     print("SCoNorm(0.25, 0.5, 'drastic') =", SCoNorm(0.25, 0.5, normType='drastic'))
 
-    ## Calculates result of T-Norm operations for N numbers, N > 2:
+    # Calculates result of T-Norm operations for N numbers, N > 2:
 
     print("TNormCompose(0.25, 0.5, 0.75, 'logic') =", TNormCompose(0.25, 0.5, 0.75, normType='logic'))
     print("TNormCompose(0.25, 0.5, 0.75, 'algebraic') =", TNormCompose(0.25, 0.5, 0.75, normType='algebraic'))
     print("TNormCompose(0.25, 0.5, 0.75, 'boundary') =", TNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("TNormCompose(0.25, 0.5, 0.75, 'drastic') =", TNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-    ## Calculates result of S-coNorm operations for N numbers, N > 2:
+    # Calculates result of S-coNorm operations for N numbers, N > 2:
 
     print("SCoNormCompose(0.25, 0.5, 0.75, 'logic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='logic'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'algebraic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='algebraic'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'boundary') =", SCoNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'drastic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-    ## --- Work with other methods:
+    # --- Work with other methods:
     print("Converting some strings to range of sorted unique numbers:")
     print('String "1,5" converted to:', DiapasonParser("1,5"))
     print('String "1-5" converted to:', DiapasonParser("1-5"))
