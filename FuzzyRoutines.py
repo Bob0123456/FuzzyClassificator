@@ -64,7 +64,7 @@ def FuzzyNOT(fuzzyNumber, alpha=0.5):
     result = fuzzyNumber  # return input number if errors
 
     if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and alpha > 0:
-        if (0 <= fuzzyNumber <= alpha):
+        if (0 <= fuzzyNumber) and (fuzzyNumber <= alpha):
             result = fuzzyNumber * (alpha - 1) / alpha + 1
 
         else:
