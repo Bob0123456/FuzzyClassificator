@@ -10,7 +10,7 @@ class TestBaseMethods():
     def init(self):
         FuzzyRoutines.FCLogger.level = 50  # Disable debug logging while test, logger CRITICAL = 50
 
-    def test_DiapasonParser(self, capsys):
+    def test_DiapasonParser(self):
         # positive tests
         assert FuzzyRoutines.DiapasonParser("1") == [1]
         assert FuzzyRoutines.DiapasonParser("1,5") == [1, 5]
@@ -25,3 +25,20 @@ class TestBaseMethods():
         assert FuzzyRoutines.DiapasonParser("1-") == []
         assert FuzzyRoutines.DiapasonParser(",") == []
         assert FuzzyRoutines.DiapasonParser("1,") == []
+
+    def test_IsCorrectFuzzyNumberValue(self):
+        # positive tests
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(0) is True
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(0.5) is True
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(1) is True
+
+        # negative tests
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(-1.5) is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(1.5) is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue('0') is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(True) is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue('True') is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(False) is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue('False') is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue([]) is False
+        assert FuzzyRoutines.IsCorrectFuzzyNumberValue(self) is False

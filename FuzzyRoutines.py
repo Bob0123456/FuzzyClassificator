@@ -44,17 +44,14 @@ def IsCorrectFuzzyNumberValue(value):
     """
     All operations in fuzzy logic are executed with numbers in interval [0, 1].
     """
-    correctNumberFlag = True
+    if not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)):
+        correctNumberFlag = (0. <= value) and (value <= 1.)
 
-    try:
-        correctNumberFlag = (0 <= value <= 1)
-
-    except:
-        FCLogger.error('{} is number not in [0, 1]!'.format(value))
+    else:
         correctNumberFlag = False
+        FCLogger.error('{} not a number in [0, 1], type = {}'.format(str(value), type(value)))
 
-    finally:
-        return correctNumberFlag
+    return correctNumberFlag
 
 
 def FuzzyNOT(fuzzyNumber, alpha=0.5):
