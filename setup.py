@@ -43,7 +43,9 @@ setup(
 
     author_email='tim55667757@gmail.com',
 
-    url='https://github.com/devopshq/FuzzyClassificator.git',
+    url='https://devopshq.github.io/FuzzyClassificator/',
+
+    download_url='https://github.com/devopshq/FuzzyClassificator.git',
 
     entry_points={'console_scripts': ['FuzzyClassificator = FuzzyClassificator:Main']},
 
