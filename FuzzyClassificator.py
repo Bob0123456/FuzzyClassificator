@@ -17,7 +17,28 @@ from FuzzyRoutines import *
 from FCLogger import *
 
 
+def Version(onlyPrint=False):
+    """
+    Return current version of FuzzyClassificator build
+    """
+    import pkg_resources  # part of standart setuptools
+
+    try:
+        version = pkg_resources.get_distribution("FuzzyClassificator").version
+
+    except:
+        version = "unknown"
+
+    if onlyPrint:
+        FCLogger.level = 50
+        print(version)
+
+    return version
+
+
 # Constants and Global variables:
+
+__version__ = Version()  # set version of current FuzzyClassificator build
 
 ethalonsDataFile = 'ethalons.dat'  # file with ethalon data samples by default
 candidatesDataFile = 'candidates.dat'  # file with candidates data samples by default
@@ -42,8 +63,10 @@ def ParseArgsMain():
     """
     parser = argparse.ArgumentParser()  # command-line string parser
 
-    parser.description = 'This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'
+    parser.description = 'FuzzyClassificator: {}. This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'.format(__version__)
     parser.epilog = 'See examples on GitHub: https://devopshq.github.io/FuzzyClassificator/'
+
+    parser.add_argument('-v', '--version', action='store_true', help='Show current version of FuzzyClassificator.')
 
     parser.add_argument('-l', '--debug-level', type=str, help='Use 1, 2, 3, 4, 5 or DEBUG, INFO, WARNING, ERROR, CRITICAL debug info verbosity, INFO (2) by default.')
     parser.add_argument('-e', '--ethalons', type=str, help='File with ethalon data samples, ethalons.dat by default.')
@@ -64,7 +87,7 @@ def ParseArgsMain():
     parser.add_argument('--classify', type=str, nargs='+', help='Start program in classificator mode with options (no space after comma): config=<inputs_num>,<layer1_num>,<layer2_num>,...,<outputs_num>')
 
     cmdArgs = parser.parse_args()
-    if (cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify):
+    if not cmdArgs.version and ((cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify)):
         parser.print_help()
         sys.exit()
 
@@ -531,6 +554,9 @@ def Main():
     exitCode = 0
 
     try:
+        if args.version:
+            Version(onlyPrint=True)  # Show current version of FuzzyClassificator
+
         if args.debug_level:
             SetLevel(args.debug_level)  # set up FCLogger level
 
