@@ -3,10 +3,37 @@ FuzzyClassificator
 
 [![FuzzyClassificator build status](https://travis-ci.org/devopshq/FuzzyClassificator.svg?branch=develop)](https://travis-ci.org/devopshq/FuzzyClassificator) [![FuzzyClassificator code quality](https://api.codacy.com/project/badge/Grade/f1511115ad144614915fc5767029e2d9)](https://www.codacy.com/app/tim55667757/FuzzyClassificator/dashboard) [![FuzzyClassificator on PyPI](https://img.shields.io/pypi/v/FuzzyClassificator.svg)](https://pypi.python.org/pypi/FuzzyClassificator) [![FuzzyClassificator license](https://img.shields.io/pypi/l/FuzzyClassificator.svg)](https://github.com/devopshq/FuzzyClassificator/blob/master/LICENSE)
 
+Index:
+- [Introduction](#Introduction)
+- [How to use](#How to use)
+    - [Presets](#Presets)
+    - [Usage](#Usage)
+        - [Optional arguments](#Optional arguments)
+        - [Work modes](#Work modes)
+        - [Usage examples](#Usage examples)
+- [Preparing data](#Preparing data)
+    - [ethalons.dat](#ethalons.dat)
+        - [Example of ethalons.dat](#Example of ethalons.dat)
+    - [candidates.dat](#candidates.dat)
+        - [Example of candidates.dat](#Example of candidates.dat)
+- [Report of classificating](#Report of classificating)
+- [Work with program modules](#Work with program modules)
+    - [FuzzyClassificator.py](#FuzzyClassificator.py)
+    - [PyBrainLearning.py](#PyBrainLearning.py)
+    - [FuzzyRoutines.py](#FuzzyRoutines.py)
+        - [Work with membership functions](#Work with membership functions)
+        - [Work with fuzzy set](#Work with fuzzy set)
+        - [Work with fuzzy scales](#Work with fuzzy scales)
+        - [Work with Universal Fuzzy Scale](#Work with Universal Fuzzy Scale)
+        - [Work with fuzzy logic operators](#Work with fuzzy logic operators)
+        - [Output examples](#Output examples)
+
+
 Introduction
 --------------
 
 This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
+
 
 How to use
 --------------
@@ -19,17 +46,17 @@ Work contains two steps:
 2. Classifying. At this step program uses trained network for classification candidates from data file.
 
 
-**Presets:**
+**Presets**
 
 The simplest way to use FuzziClassificator without some troubles is to install Pyzo + Anaconda interpreter, which contains all needable scientific libraries. [Pyzo](http://www.pyzo.org/start.html) is a cross-platform Python IDE focused on interactivity and introspection, which makes it very suitable for scientific computing. [Anaconda](https://www.continuum.io/downloads) is the open data science platform powered by Python. The open source version of Anaconda is a high performance distribution of Python and includes most of the popular Python packages for scientific calculation. In all the examples below, we used an Anaconda Python interpreter.
 
 
-**Usage:**
+**Usage**
 
     python FuzzyClassificator.py [options] [--learn]|[--classify] [Network_Options]
 
 
-*Optional arguments:*
+*Optional arguments*
 
     -h, --help
         Show help message and exit.
@@ -89,7 +116,7 @@ The simplest way to use FuzziClassificator without some troubles is to install P
         Update error status after this epochs time, 5 by default.
         This parameter affected training speed.
 
-*Work modes:*
+*Work modes*
 
 Learning Mode:
     
@@ -130,8 +157,7 @@ Classifying Mode:
             and outputs is number of neurons in output layer
         }
 
-
-*Examples:*
+*Usage examples*
 
 Start learning with user's ethalon data file and neuronet options Config=(3,[3,2],2), 10 epochs, 0.1 learning rate and 0.05 momentum, epsilon is 0.01 and stop learning if errors less than 5%, update information in log every 5 epochs:
 
@@ -142,6 +168,7 @@ Classify all candidates from file candidates.dat and show result in report.txt:
     python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt --classify config=3,3,2,2 --separator=TAB --debug-level=DEBUG
 
 Where 'python' is full path to Pyzo Python 3.3.2 interpreter.
+
 
 Preparing data
 --------------
@@ -157,7 +184,7 @@ This is default file with ethalon data set. This file contains tab-delimited dat
 For each input vector level of membership in the class characterized by the output vector.
 
 
-*Example:*
+*Example of ethalons.dat*
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.1     0.2     Min     Min               Max
@@ -184,7 +211,7 @@ This is default file with data set for classifying. This file contains tab-delim
     -  M input columns: <1st value><tab>...<tab><M-th value>
 
 
-*Example:*
+*Example of candidates.dat*
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.12    0.32    Min
@@ -192,6 +219,10 @@ This is default file with data set for classifying. This file contains tab-delim
     0.54    0.57    Med
     0.65    0.68    High
     0.76    0.79    Max
+
+
+Report of classificating
+--------------
 
 To classify each of input vectors You must to use --classify key. All columns are used as values of input vectors.
 
@@ -278,7 +309,7 @@ Library contains some routines for work with fuzzy logic operators, fuzzy datase
 
 There are some examples of working with fuzzy library after importing it. Just copying at the end of FuzzyRoutines and run it.
 
-*Work with membership functions.*
+*Work with membership functions*
 
 Usage of some membership functions (uncomment one of them):
 
@@ -315,7 +346,7 @@ Calculating some function's values in [0, 1]:
         res = funct.mju(xPar)  # calculate one value of MF with given parameters
         print('{}({:1.1f}, {}) = {:1.4f}'.format(funct.name, xPar, funct.parameters, res))
 
-*Work with fuzzy set.*
+*Work with fuzzy set*
 
     fuzzySet = FuzzySet(funct, (0., 1.))  # creating fuzzy set A = <mju_funct, support_set>
     print('Printing fuzzy set after init before changes:', fuzzySet)
@@ -335,7 +366,7 @@ Calculating some function's values in [0, 1]:
     print('New value of Defuz({}) = {:1.2f}'.format(fuzzySet.name, fuzzySet.Defuz()))
     print('Printing fuzzy set after changes:', fuzzySet)
 
-*Work with fuzzy scales.*
+*Work with fuzzy scales*
 
 Fuzzy scale is an ordered set of linguistic variables that looks like this:
 
@@ -380,7 +411,7 @@ Change scale levels:
     for item in scale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-*Work with Universal Fuzzy Scale.*
+*Work with Universal Fuzzy Scale*
 
 Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
 
@@ -435,7 +466,7 @@ Finding fuzzy level using GetLevelByName() function without exact matching:
     res = uniFScale.GetLevelByName('Highest', exactMatching=False)
     print("GetLevelByName('Highest', {}) = {}, {}".format(uniFScale.name, res['name'] if res else 'None', res['fSet'] if res else 'None'))
 
-*Work with fuzzy logic operators.*
+*Work with fuzzy logic operators*
 
 Checks that number is in [0, 1]:
 
@@ -484,6 +515,8 @@ Calculates result of S-coNorm operations for N numbers, N > 2:
     print("SCoNormCompose(0.25, 0.5, 0.75, 'algebraic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='algebraic'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'boundary') =", SCoNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'drastic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='drastic'))
+
+*Output examples*
 
 If you run code above - you'll see next console output:
 
