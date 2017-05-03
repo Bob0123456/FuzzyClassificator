@@ -24,10 +24,10 @@ def Version(onlyPrint=False):
     import pkg_resources  # part of standart setuptools
 
     try:
-        version = pkg_resources.get_distribution("FuzzyClassificator").version
+        version = pkg_resources.get_distribution('FuzzyClassificator').version
 
     except:
-        version = "unknown"
+        version = 'unknown'
 
     if onlyPrint:
         FCLogger.level = 50
@@ -63,7 +63,7 @@ def ParseArgsMain():
     """
     parser = argparse.ArgumentParser()  # command-line string parser
 
-    parser.description = 'FuzzyClassificator: {}. This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'.format(__version__)
+    parser.description = 'FuzzyClassificator version: {}. This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'.format(__version__)
     parser.epilog = 'See examples on GitHub: https://devopshq.github.io/FuzzyClassificator/'
 
     parser.add_argument('-v', '--version', action='store_true', help='Show current version of FuzzyClassificator.')
@@ -336,6 +336,7 @@ def LearningMode(**inputParameters):
     successFinish = False  # success Learning Mode finish flag
 
     FCLogger.info(sepLong)
+    FCLogger.info('FuzzyClassificator version: {}'.format(__version__))
     FCLogger.info('Learning mode activated.')
     FCLogger.info('Log file: {}'.format(os.path.abspath(fileLogHandler.baseFilename)))
 
@@ -507,6 +508,7 @@ def ClassifyingMode(**inputParameters):
     successFinish = False  # success Classifying mode finish flag
 
     FCLogger.info(sepLong)
+    FCLogger.info('FuzzyClassificator version: {}'.format(__version__))
     FCLogger.info('Classificator mode activated.')
     FCLogger.info('Log file: {}'.format(os.path.abspath(fileLogHandler.baseFilename)))
 
