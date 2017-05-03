@@ -2,7 +2,7 @@ FuzzyClassificator
 ==================
 
 [![FuzzyClassificator build status](https://travis-ci.org/devopshq/FuzzyClassificator.svg?branch=develop)](https://travis-ci.org/devopshq/FuzzyClassificator) [![FuzzyClassificator code quality](https://api.codacy.com/project/badge/Grade/f1511115ad144614915fc5767029e2d9)](https://www.codacy.com/app/tim55667757/FuzzyClassificator/dashboard) [![FuzzyClassificator on PyPI](https://img.shields.io/pypi/v/FuzzyClassificator.svg)](https://pypi.python.org/pypi/FuzzyClassificator) [![FuzzyClassificator license](https://img.shields.io/pypi/l/FuzzyClassificator.svg)](https://github.com/devopshq/FuzzyClassificator/blob/master/LICENSE)
-    
+
 Introduction
 --------------
 
@@ -33,6 +33,13 @@ The simplest way to use FuzziClassificator without some troubles is to install P
 
     -h, --help
         Show help message and exit.
+
+    -v, --version
+        Show current version of FuzzyClassificator: 
+            [major].[minor].[build] if builded from master or release*,
+            [major].[minor].dev[build] if builded from other branches,
+            [major].[minor].localbuild if local builded with setup.py install,
+            unknown if not installed from PyPI or simply run as python script.
 
     -l [verbosity], --debug-level=[verbosity]
         Use 1, 2, 3, 4, 5 or DEBUG, INFO, WARNING, ERROR, CRITICAL debug info verbosity,
