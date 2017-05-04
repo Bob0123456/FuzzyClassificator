@@ -76,7 +76,7 @@ def FuzzyNOTParabolic(fuzzyNumber, alpha=0.5, epsilon=0.001):
     """
     result = fuzzyNumber  # return input number if errors
 
-    if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and alpha > 0:
+    if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and IsCorrectFuzzyNumberValue(epsilon) and alpha > 0:
         if fuzzyNumber == 0:
             result = 1
 
