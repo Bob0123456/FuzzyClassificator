@@ -3,7 +3,7 @@ FuzzyClassificator
 
 [![FuzzyClassificator build status](https://travis-ci.org/devopshq/FuzzyClassificator.svg?branch=develop)](https://travis-ci.org/devopshq/FuzzyClassificator) [![FuzzyClassificator code quality](https://api.codacy.com/project/badge/Grade/f1511115ad144614915fc5767029e2d9)](https://www.codacy.com/app/tim55667757/FuzzyClassificator/dashboard) [![FuzzyClassificator on PyPI](https://img.shields.io/pypi/v/FuzzyClassificator.svg)](https://pypi.python.org/pypi/FuzzyClassificator) [![FuzzyClassificator license](https://img.shields.io/pypi/l/FuzzyClassificator.svg)](https://github.com/devopshq/FuzzyClassificator/blob/master/LICENSE)
 
-Index:
+*Index:*
 - [Introduction](#Chapter_1)
 - [How to use](#Chapter_2)
     - [Presets](#Chapter_2_1)
@@ -56,7 +56,7 @@ The simplest way to use FuzziClassificator without some troubles is to install P
     python FuzzyClassificator.py [options] [--learn]|[--classify] [Network_Options]
 
 
-<a name="Chapter_2_2_1"></a> *Optional arguments*
+<a name="Chapter_2_2_1"></a> ***Optional arguments***
 
     -h, --help
         Show help message and exit.
@@ -116,7 +116,7 @@ The simplest way to use FuzziClassificator without some troubles is to install P
         Update error status after this epochs time, 5 by default.
         This parameter affected training speed.
 
-<a name="Chapter_2_2_2"></a> *Work modes*
+<a name="Chapter_2_2_2"></a> ***Work modes***
 
 Learning Mode:
     
@@ -157,7 +157,7 @@ Classifying Mode:
             and outputs is number of neurons in output layer
         }
 
-<a name="Chapter_2_2_3"></a> *Usage examples*
+<a name="Chapter_2_2_3"></a> ***Usage examples***
 
 Start learning with user's ethalon data file and neuronet options Config=(3,[3,2],2), 10 epochs, 0.1 learning rate and 0.05 momentum, epsilon is 0.01 and stop learning if errors less than 5%, update information in log every 5 epochs:
 
@@ -184,7 +184,7 @@ This is default file with ethalon data set. This file contains tab-delimited dat
 For each input vector level of membership in the class characterized by the output vector.
 
 
-<a name="Chapter_3_1_1"></a> *Example of ethalons.dat*
+<a name="Chapter_3_1_1"></a> ***Example of ethalons.dat***
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.1     0.2     Min     Min               Max
@@ -211,7 +211,7 @@ This is default file with data set for classifying. This file contains tab-delim
     -  M input columns: <1st value><tab>...<tab><M-th value>
 
 
-<a name="Chapter_3_2_1"></a> *Example of candidates.dat*
+<a name="Chapter_3_2_1"></a> ***Example of candidates.dat***
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.12    0.32    Min
@@ -309,7 +309,7 @@ Library contains some routines for work with fuzzy logic operators, fuzzy datase
 
 There are some examples of working with fuzzy library after importing it. Just copying at the end of FuzzyRoutines and run it.
 
-<a name="Chapter_5_3_1"></a> *Work with membership functions*
+<a name="Chapter_5_3_1"></a> ***Work with membership functions***
 
 Usage of some membership functions (uncomment one of them):
 
@@ -346,7 +346,7 @@ Calculating some function's values in [0, 1]:
         res = funct.mju(xPar)  # calculate one value of MF with given parameters
         print('{}({:1.1f}, {}) = {:1.4f}'.format(funct.name, xPar, funct.parameters, res))
 
-<a name="Chapter_5_3_2"></a> *Work with fuzzy set*
+<a name="Chapter_5_3_2"></a> ***Work with fuzzy set***
 
     fuzzySet = FuzzySet(funct, (0., 1.))  # creating fuzzy set A = <mju_funct, support_set>
     print('Printing fuzzy set after init before changes:', fuzzySet)
@@ -366,7 +366,7 @@ Calculating some function's values in [0, 1]:
     print('New value of Defuz({}) = {:1.2f}'.format(fuzzySet.name, fuzzySet.Defuz()))
     print('Printing fuzzy set after changes:', fuzzySet)
 
-<a name="Chapter_5_3_3"></a> *Work with fuzzy scales*
+<a name="Chapter_5_3_3"></a> ***Work with fuzzy scales***
 
 Fuzzy scale is an ordered set of linguistic variables that looks like this:
 
@@ -411,7 +411,7 @@ Change scale levels:
     for item in scale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-<a name="Chapter_5_3_4"></a> *Work with Universal Fuzzy Scale*
+<a name="Chapter_5_3_4"></a> ***Work with Universal Fuzzy Scale***
 
 Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
 
@@ -466,7 +466,7 @@ Finding fuzzy level using GetLevelByName() function without exact matching:
     res = uniFScale.GetLevelByName('Highest', exactMatching=False)
     print("GetLevelByName('Highest', {}) = {}, {}".format(uniFScale.name, res['name'] if res else 'None', res['fSet'] if res else 'None'))
 
-<a name="Chapter_5_3_5"></a> *Work with fuzzy logic operators*
+<a name="Chapter_5_3_5"></a> ***Work with fuzzy logic operators***
 
 Checks that number is in [0, 1]:
 
@@ -516,7 +516,7 @@ Calculates result of S-coNorm operations for N numbers, N > 2:
     print("SCoNormCompose(0.25, 0.5, 0.75, 'boundary') =", SCoNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'drastic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-<a name="Chapter_5_3_6"></a> *Output examples*
+<a name="Chapter_5_3_6"></a> ***Output examples***
 
 If you run code above - you'll see next console output:
 
