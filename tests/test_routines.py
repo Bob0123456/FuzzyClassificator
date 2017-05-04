@@ -46,6 +46,7 @@ class TestBaseMethods():
     def test_FuzzyNOT(self):
         # positive tests
         assert FuzzyRoutines.FuzzyNOT(0.) == 1.
+        assert FuzzyRoutines.FuzzyNOT(0.5) == 0.5
         assert FuzzyRoutines.FuzzyNOT(1.) == 0.
         assert FuzzyRoutines.FuzzyNOT(0.25, alpha=0.) == 0.25  # an exception (return self fuzzyNumber)
         assert FuzzyRoutines.FuzzyNOT(0.25, alpha=0.25) == 0.25
@@ -65,3 +66,29 @@ class TestBaseMethods():
         assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=0.) == -1.1  # an exception (return self fuzzyNumber)
         assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=0.25) == -1.1  # an exception (return self fuzzyNumber)
         assert FuzzyRoutines.FuzzyNOT(-1.1, alpha=1) == -1.1  # an exception (return self fuzzyNumber)
+
+    def test_FuzzyNOTParabolic(self):
+        # positive tests
+        assert FuzzyRoutines.FuzzyNOTParabolic(0.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0.5) - 0.5 <= 0.000000001
+        assert FuzzyRoutines.FuzzyNOTParabolic(1.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=0., epsilon=0.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=0., epsilon=1.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=1., epsilon=0.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=1., epsilon=1.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=0.25, epsilon=0.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=0.25, epsilon=1.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., alpha=0.25, epsilon=0.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., alpha=0.25, epsilon=1.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=0., epsilon=0.25) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=1., epsilon=0.25) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., alpha=0., epsilon=0.25) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., alpha=1., epsilon=0.25) == 0.
+
+        # negative tests
+        assert FuzzyRoutines.FuzzyNOTParabolic(-1.) == -1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(2.) == 2.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., alpha=-1.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., alpha=2.) == 1.
+        assert FuzzyRoutines.FuzzyNOTParabolic(0., epsilon=-1.) == 0.
+        assert FuzzyRoutines.FuzzyNOTParabolic(1., epsilon=2.) == 1.
