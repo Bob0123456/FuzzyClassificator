@@ -4,38 +4,38 @@ FuzzyClassificator
 [![FuzzyClassificator build status](https://travis-ci.org/devopshq/FuzzyClassificator.svg?branch=develop)](https://travis-ci.org/devopshq/FuzzyClassificator) [![FuzzyClassificator code quality](https://api.codacy.com/project/badge/Grade/f1511115ad144614915fc5767029e2d9)](https://www.codacy.com/app/tim55667757/FuzzyClassificator/dashboard) [![FuzzyClassificator on PyPI](https://img.shields.io/pypi/v/FuzzyClassificator.svg)](https://pypi.python.org/pypi/FuzzyClassificator) [![FuzzyClassificator license](https://img.shields.io/pypi/l/FuzzyClassificator.svg)](https://github.com/devopshq/FuzzyClassificator/blob/master/LICENSE)
 
 Index:
-- [Introduction](#Introduction)
-- [How to use](#How to use)
-    - [Presets](#Presets)
-    - [Usage](#Usage)
-        - [Optional arguments](#Optional arguments)
-        - [Work modes](#Work modes)
-        - [Usage examples](#Usage examples)
-- [Preparing data](#Preparing data)
-    - [ethalons.dat](#ethalons.dat)
-        - [Example of ethalons.dat](#Example of ethalons.dat)
-    - [candidates.dat](#candidates.dat)
-        - [Example of candidates.dat](#Example of candidates.dat)
-- [Report of classificating](#Report of classificating)
-- [Work with program modules](#Work with program modules)
-    - [FuzzyClassificator.py](#FuzzyClassificator.py)
-    - [PyBrainLearning.py](#PyBrainLearning.py)
-    - [FuzzyRoutines.py](#FuzzyRoutines.py)
-        - [Work with membership functions](#Work with membership functions)
-        - [Work with fuzzy set](#Work with fuzzy set)
-        - [Work with fuzzy scales](#Work with fuzzy scales)
-        - [Work with Universal Fuzzy Scale](#Work with Universal Fuzzy Scale)
-        - [Work with fuzzy logic operators](#Work with fuzzy logic operators)
-        - [Output examples](#Output examples)
+- [Introduction](#Chapter_1)
+- [How to use](#Chapter_2)
+    - [Presets](#Chapter_2_1)
+    - [Usage](#Chapter_2_2)
+        - [Optional arguments](#Chapter_2_2_1)
+        - [Work modes](#Chapter_2_2_2)
+        - [Usage examples](#Chapter_2_2_3)
+- [Preparing data](#Chapter_3)
+    - [ethalons.dat](#Chapter_3_1)
+        - [Example of ethalons.dat](#Chapter_3_1_1)
+    - [candidates.dat](#Chapter_3_2)
+        - [Example of candidates.dat](#Chapter_3_2_1)
+- [Report of classificating](#Chapter_4)
+- [Work with program modules](#Chapter_5)
+    - [FuzzyClassificator.py](#Chapter_5_1)
+    - [PyBrainLearning.py](#Chapter_5_2)
+    - [FuzzyRoutines.py](#Chapter_5_3)
+        - [Work with membership functions](#Chapter_5_3_1)
+        - [Work with fuzzy set](#Chapter_5_3_2)
+        - [Work with fuzzy scales](#Chapter_5_3_3)
+        - [Work with Universal Fuzzy Scale](#Chapter_5_3_4)
+        - [Work with fuzzy logic operators](#Chapter_5_3_5)
+        - [Output examples](#Chapter_5_3_6)
 
 
-Introduction
+<a name="Chapter_1"></a> Introduction
 --------------
 
 This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
 
 
-How to use
+<a name="Chapter_2"></a> How to use
 --------------
 
 FuzzyClassificator uses ethalons.dat (default) as learning data and candidates.dat (default) for classifying data (See "Preparing data" chapter).
@@ -46,17 +46,17 @@ Work contains two steps:
 2. Classifying. At this step program uses trained network for classification candidates from data file.
 
 
-**Presets**
+<a name="Chapter_2_1"></a> **Presets**
 
 The simplest way to use FuzziClassificator without some troubles is to install Pyzo + Anaconda interpreter, which contains all needable scientific libraries. [Pyzo](http://www.pyzo.org/start.html) is a cross-platform Python IDE focused on interactivity and introspection, which makes it very suitable for scientific computing. [Anaconda](https://www.continuum.io/downloads) is the open data science platform powered by Python. The open source version of Anaconda is a high performance distribution of Python and includes most of the popular Python packages for scientific calculation. In all the examples below, we used an Anaconda Python interpreter.
 
 
-**Usage**
+<a name="Chapter_2_2"></a> **Usage**
 
     python FuzzyClassificator.py [options] [--learn]|[--classify] [Network_Options]
 
 
-*Optional arguments*
+<a name="Chapter_2_2_1"></a> *Optional arguments*
 
     -h, --help
         Show help message and exit.
@@ -116,7 +116,7 @@ The simplest way to use FuzziClassificator without some troubles is to install P
         Update error status after this epochs time, 5 by default.
         This parameter affected training speed.
 
-*Work modes*
+<a name="Chapter_2_2_2"></a> *Work modes*
 
 Learning Mode:
     
@@ -157,7 +157,7 @@ Classifying Mode:
             and outputs is number of neurons in output layer
         }
 
-*Usage examples*
+<a name="Chapter_2_2_3"></a> *Usage examples*
 
 Start learning with user's ethalon data file and neuronet options Config=(3,[3,2],2), 10 epochs, 0.1 learning rate and 0.05 momentum, epsilon is 0.01 and stop learning if errors less than 5%, update information in log every 5 epochs:
 
@@ -170,10 +170,10 @@ Classify all candidates from file candidates.dat and show result in report.txt:
 Where 'python' is full path to Pyzo Python 3.3.2 interpreter.
 
 
-Preparing data
+<a name="Chapter_3"></a> Preparing data
 --------------
 
-**ethalons.dat**
+<a name="Chapter_3_1"></a> **ethalons.dat**
 
 This is default file with ethalon data set. This file contains tab-delimited data (by default) that looks like this:
 
@@ -184,7 +184,7 @@ This is default file with ethalon data set. This file contains tab-delimited dat
 For each input vector level of membership in the class characterized by the output vector.
 
 
-*Example of ethalons.dat*
+<a name="Chapter_3_1_1"></a> *Example of ethalons.dat*
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.1     0.2     Min     Min               Max
@@ -202,7 +202,7 @@ where first config parameter mean that dimension of input vector is 3, last conf
 dimension of output vector is 2, and the middle "3,2" parameters means that neural network must be created with two hidden layers, three neurons in 1st hidden layer and two neurons in 2nd.
 
 
-**candidates.dat**
+<a name="Chapter_3_2"></a> **candidates.dat**
 
 This is default file with data set for classifying. This file contains tab-delimited data (by default) that looks like this:
 
@@ -211,7 +211,7 @@ This is default file with data set for classifying. This file contains tab-delim
     -  M input columns: <1st value><tab>...<tab><M-th value>
 
 
-*Example of candidates.dat*
+<a name="Chapter_3_2_1"></a> *Example of candidates.dat*
 
     input1  input2  input3  1st_class_output  2nd_class_output
     0.12    0.32    Min
@@ -221,7 +221,7 @@ This is default file with data set for classifying. This file contains tab-delim
     0.76    0.79    Max
 
 
-Report of classificating
+<a name="Chapter_4"></a> Report of classificating
 --------------
 
 To classify each of input vectors You must to use --classify key. All columns are used as values of input vectors.
@@ -256,10 +256,10 @@ Then You'll get *report.text* file with information that looks like this:
         Input: ['0.76', '0.79', 'Max']	Output: ['Max', 'Min']
 
 
-Work with program modules
+<a name="Chapter_5"></a> Work with program modules
 --------------
 
-**FuzzyClassificator.py**
+<a name="Chapter_5_1"></a> **FuzzyClassificator.py**
 
 This is main module which realizes user command-line interaction. Main methods are *LearningMode()* and *ClassifyingMode()* which provide similar program modes. The module provide user interface that implemented in PyBrainLearning.py.
 
@@ -286,7 +286,7 @@ The *ClassifyingMode()* method only runs calculations using the trained neural n
 
 What are the console keys used to control the module - see above.
 
-**PyBrainLearning.py**
+<a name="Chapter_5_2"></a> **PyBrainLearning.py**
 
 This is library for work with fuzzy neural networks. You can import and re-use module in your programm if you'd like to realize own work with networks.
 
@@ -303,13 +303,13 @@ All routines to work with fuzzy neural networks realized in *FuzzyNeuroNetwork()
 
 You can import this class and use its methods in other projects.
 
-**FuzzyRoutines.py**
+<a name="Chapter_5_3"></a> **FuzzyRoutines.py**
 
 Library contains some routines for work with fuzzy logic operators, fuzzy datasets and fuzzy scales.
 
 There are some examples of working with fuzzy library after importing it. Just copying at the end of FuzzyRoutines and run it.
 
-*Work with membership functions*
+<a name="Chapter_5_3_1"></a> *Work with membership functions*
 
 Usage of some membership functions (uncomment one of them):
 
@@ -346,7 +346,7 @@ Calculating some function's values in [0, 1]:
         res = funct.mju(xPar)  # calculate one value of MF with given parameters
         print('{}({:1.1f}, {}) = {:1.4f}'.format(funct.name, xPar, funct.parameters, res))
 
-*Work with fuzzy set*
+<a name="Chapter_5_3_2"></a> *Work with fuzzy set*
 
     fuzzySet = FuzzySet(funct, (0., 1.))  # creating fuzzy set A = <mju_funct, support_set>
     print('Printing fuzzy set after init before changes:', fuzzySet)
@@ -366,7 +366,7 @@ Calculating some function's values in [0, 1]:
     print('New value of Defuz({}) = {:1.2f}'.format(fuzzySet.name, fuzzySet.Defuz()))
     print('Printing fuzzy set after changes:', fuzzySet)
 
-*Work with fuzzy scales*
+<a name="Chapter_5_3_3"></a> *Work with fuzzy scales*
 
 Fuzzy scale is an ordered set of linguistic variables that looks like this:
 
@@ -411,7 +411,7 @@ Change scale levels:
     for item in scale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-*Work with Universal Fuzzy Scale*
+<a name="Chapter_5_3_4"></a> *Work with Universal Fuzzy Scale*
 
 Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
 
@@ -466,7 +466,7 @@ Finding fuzzy level using GetLevelByName() function without exact matching:
     res = uniFScale.GetLevelByName('Highest', exactMatching=False)
     print("GetLevelByName('Highest', {}) = {}, {}".format(uniFScale.name, res['name'] if res else 'None', res['fSet'] if res else 'None'))
 
-*Work with fuzzy logic operators*
+<a name="Chapter_5_3_5"></a> *Work with fuzzy logic operators*
 
 Checks that number is in [0, 1]:
 
@@ -516,7 +516,7 @@ Calculates result of S-coNorm operations for N numbers, N > 2:
     print("SCoNormCompose(0.25, 0.5, 0.75, 'boundary') =", SCoNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'drastic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-*Output examples*
+<a name="Chapter_5_3_6"></a> *Output examples*
 
 If you run code above - you'll see next console output:
 
