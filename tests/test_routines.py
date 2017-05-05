@@ -104,3 +104,23 @@ class TestBaseMethods():
         ]
         for test in testData:
             assert round(FuzzyRoutines.FuzzyNOTParabolic(test[0], alpha=test[1], epsilon=test[2]), 5) == test[3], 'Input: [ {}, alpha={}, epsilon={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+
+    def test_FuzzyAND(self):
+        testData = [
+            # positive tests:
+            [0., 0., 0.],
+            [0., 1., 0.],
+            [1., 0., 0.],
+            [1., 1., 1.],
+            [0.5, 0.6, 0.5],
+            [0.7, 0.5, 0.5],
+            # negative tests:
+            [None, None, 0.],
+            [self, 0., 0.],
+            [-1., 0., 0.],
+            [0., -1., 0.],
+            [2., 2., 0.],
+            ['0.', '0.', 0.],
+        ]
+        for test in testData:
+            assert FuzzyRoutines.FuzzyAND(test[0], test[1]) == test[2], 'Input: [ {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2])
