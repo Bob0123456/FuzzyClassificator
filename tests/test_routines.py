@@ -196,20 +196,17 @@ class TestBaseMethods():
             [1., 1., 'logic', 1.],
             [0.5, 0.6, 'logic', 0.5],
             [0.6, 0.5, 'logic', 0.5],
-
             [0., 0., 'algebraic', 0.],
             [0., 1., 'algebraic', 0.],
             [1., 0., 'algebraic', 0.],
             [1., 1., 'algebraic', 1.],
             [0.5, 0.6, 'algebraic', 0.3],
-
             [0., 0., 'boundary', 0.],
             [0., 1., 'boundary', 0.],
             [1., 0., 'boundary', 0.],
             [1., 1., 'boundary', 1.],
             [0.5, 0.5, 'boundary', 0.],
             [0.6, 0.6, 'boundary', 0.2],
-
             [0., 0., 'drastic', 0.],
             [0., 1., 'drastic', 0.],
             [1., 0., 'drastic', 0.],
@@ -230,7 +227,6 @@ class TestBaseMethods():
             [0.5, None, 'logic', None],
             [self, 0.5, 'logic', None],
             [1., [], 'logic', None],
-
             [-1., 0., 'algebraic', None],
             [0., -1., 'algebraic', None],
             ["1.", 0., 'algebraic', None],
@@ -238,7 +234,6 @@ class TestBaseMethods():
             [0.5, None, 'algebraic', None],
             [self, 0.6, 'algebraic', None],
             [1., [], 'algebraic', None],
-
             [-1., 0., 'boundary', None],
             [0., -1., 'boundary', None],
             ["1.", 0., 'boundary', None],
@@ -246,7 +241,6 @@ class TestBaseMethods():
             [0.5, None, 'boundary', None],
             [self, 0.6, 'boundary', None],
             [1., [], 'boundary', None],
-
             [-1., 0., 'drastic', None],
             [0., -1., 'drastic', None],
             ["1.", 0., 'drastic', None],
@@ -257,3 +251,24 @@ class TestBaseMethods():
         ]
         for test in testDataNegative:
             assert FuzzyRoutines.TNorm(test[0], test[1], test[2]) is test[3], 'Input: [ {}, {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+
+    def test_TNormCompose(self):
+        # positive tests:
+        testDataPositive = [
+            [0.1, 0.2, 0.3, 'logic', 0.1],
+            [0.1, 0.2, 0.3, 'algebraic', 0.006],
+            [0.9, 0.9, 0.9, 'boundary', 0.7],
+            [0.1, 0.2, 1., 'drastic', 0.],
+        ]
+        for test in testDataPositive:
+            assert round(FuzzyRoutines.TNormCompose(test[0], test[1], test[2], normType=test[3]), 5) == test[4], 'Input: [ {}, {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3], test[4])
+
+        # negative tests:
+        testDataNegative = [
+            [[], None],
+            [None, None],
+            ['0.1', None],
+            [self, None],
+        ]
+        for test in testDataNegative:
+            assert FuzzyRoutines.TNormCompose(test[0]) is test[1], 'Input: [ {} ] expected output: [ {} ]'.format(test[0], test[1])
