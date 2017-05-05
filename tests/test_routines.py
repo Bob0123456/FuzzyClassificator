@@ -216,7 +216,7 @@ class TestBaseMethods():
             [0.7, 1., 'drastic', 0.7],
         ]
         for test in testDataPositive:
-            assert round(FuzzyRoutines.TNorm(test[0], test[1], test[2]), 5) == test[3], 'Input: [ {}, {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+            assert round(FuzzyRoutines.TNorm(test[0], test[1], normType=test[2]), 5) == test[3], 'Input: [ {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
 
         # negative tests:
         testDataNegative = [
@@ -250,7 +250,7 @@ class TestBaseMethods():
             [1., [], 'drastic', None],
         ]
         for test in testDataNegative:
-            assert FuzzyRoutines.TNorm(test[0], test[1], test[2]) is test[3], 'Input: [ {}, {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+            assert FuzzyRoutines.TNorm(test[0], test[1], normType=test[2]) is test[3], 'Input: [ {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
 
     def test_TNormCompose(self):
         # positive tests:
@@ -272,3 +272,68 @@ class TestBaseMethods():
         ]
         for test in testDataNegative:
             assert FuzzyRoutines.TNormCompose(test[0]) is test[1], 'Input: [ {} ] expected output: [ {} ]'.format(test[0], test[1])
+
+    def test_SCoNorm(self):
+        # positive tests:
+        testDataPositive = [
+            [0., 0., 'logic', 0.],
+            [0., 1., 'logic', 1.],
+            [1., 0., 'logic', 1.],
+            [1., 1., 'logic', 1.],
+            [0.5, 0.6, 'logic', 0.6],
+            [0.7, 0.6, 'logic', 0.7],
+            [0., 0., 'algebraic', 0.],
+            [0., 1., 'algebraic', 1.],
+            [1., 0., 'algebraic', 1.],
+            [1., 1., 'algebraic', 1.],
+            [0.5, 0.6, 'algebraic', 0.8],
+            [0., 0., 'boundary', 0.],
+            [0., 1., 'boundary', 1.],
+            [1., 0., 'boundary', 1.],
+            [1., 1., 'boundary', 1.],
+            [0.5, 0.5, 'boundary', 1.],
+            [0.6, 0.6, 'boundary', 1.],
+            [0., 0., 'drastic', 0.],
+            [0., 1., 'drastic', 1.],
+            [1., 0., 'drastic', 1.],
+            [1., 1., 'drastic', 1.],
+            [0.5, 0.5, 'drastic', 1.],
+            [1., 0.6, 'drastic', 1.],
+            [0.7, 1., 'drastic', 1.],
+        ]
+        for test in testDataPositive:
+            assert round(FuzzyRoutines.SCoNorm(test[0], test[1], normType=test[2]), 5) == test[3], 'Input: [ {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+
+        # negative tests:
+        testDataNegative = [
+            [-1., 0., 'logic', None],
+            [0., -1., 'logic', None],
+            ["1.", 0., 'logic', None],
+            [1., "1.", 'logic', None],
+            [0.5, None, 'logic', None],
+            [self, 0.5, 'logic', None],
+            [1., [], 'logic', None],
+            [-1., 0., 'algebraic', None],
+            [0., -1., 'algebraic', None],
+            ["1.", 0., 'algebraic', None],
+            [1., "1.", 'algebraic', None],
+            [0.5, None, 'algebraic', None],
+            [self, 0.6, 'algebraic', None],
+            [1., [], 'algebraic', None],
+            [-1., 0., 'boundary', None],
+            [0., -1., 'boundary', None],
+            ["1.", 0., 'boundary', None],
+            [1., "1.", 'boundary', None],
+            [0.5, None, 'boundary', None],
+            [self, 0.6, 'boundary', None],
+            [1., [], 'boundary', None],
+            [-1., 0., 'drastic', None],
+            [0., -1., 'drastic', None],
+            ["1.", 0., 'drastic', None],
+            [1., "1.", 'drastic', None],
+            [0.5, None, 'drastic', None],
+            [self, 0.6, 'drastic', None],
+            [1., [], 'drastic', None],
+        ]
+        for test in testDataNegative:
+            assert FuzzyRoutines.SCoNorm(test[0], test[1], normType=test[2]) is test[3], 'Input: [ {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
