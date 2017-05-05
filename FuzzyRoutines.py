@@ -40,25 +40,34 @@ def DiapasonParser(diapason):
         return sorted(list(set(fullDiapason)))
 
 
+def IsNumber(value):
+    """
+    Return True if value is float or integer number. 
+    """
+    if not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)):
+        return True
+
+    else:
+        return False
+
+
 def IsCorrectFuzzyNumberValue(value):
     """
     All operations in fuzzy logic are executed with numbers in interval [0, 1].
     """
-    if not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)):
-        correctNumberFlag = (0. <= value) and (value <= 1.)
+    if IsNumber(value):
+        return (0. <= value) and (value <= 1.)
 
     else:
-        correctNumberFlag = False
-        FCLogger.error('{} not a number in [0, 1], type = {}'.format(str(value), type(value)))
-
-    return correctNumberFlag
+        FCLogger.error('{} not a real number in [0, 1], type = {}'.format(str(value), type(value)))
+        return False
 
 
 def FuzzyNOT(fuzzyNumber, alpha=0.5):
     """
     Fuzzy logic NOT operator. y = 1 - Fuzzy if alpha = 0.5
     """
-    result = fuzzyNumber  # return input number if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and alpha > 0:
         if (0 <= fuzzyNumber) and (fuzzyNumber <= alpha):
@@ -74,7 +83,7 @@ def FuzzyNOTParabolic(fuzzyNumber, alpha=0.5, epsilon=0.001):
     """
     Parabolic fuzzy NOT operator. 2a - x - y = (2a - 1)(y - x)^2.
     """
-    result = fuzzyNumber  # return input number if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and IsCorrectFuzzyNumberValue(epsilon) and alpha > 0:
         if fuzzyNumber == 0:
@@ -92,28 +101,26 @@ def FuzzyNOTParabolic(fuzzyNumber, alpha=0.5, epsilon=0.001):
     return result
 
 
-def FuzzyAND(aFuzzyNumber, bFuzzyNumber):
+def FuzzyAND(aNumber, bNumber):
     """
     Fuzzy AND operator is minimum of two numbers.
     """
-    result = 0  # return 0 if errors
+    if IsNumber(aNumber) and IsNumber(bNumber):
+        return min(aNumber, bNumber)
 
-    if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
-        result = min(aFuzzyNumber, bFuzzyNumber)
-
-    return result
+    else:
+        return None  # return None if errors
 
 
-def FuzzyOR(aFuzzyNumber, bFuzzyNumber):
+def FuzzyOR(aNumber, bNumber):
     """
     Fuzzy OR operator is maximum of two numbers.
     """
-    result = 1  # return 1 if errors
+    if IsNumber(aNumber) and IsNumber(bNumber):
+        return max(aNumber, bNumber)
 
-    if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
-        result = max(aFuzzyNumber, bFuzzyNumber)
-
-    return result
+    else:
+        return None  # return None if errors
 
 
 def TNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
