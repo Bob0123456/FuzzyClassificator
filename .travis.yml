@@ -5,10 +5,13 @@ branches:
   - master
   - develop
 install:
-  - pip install pytest
+  - pip install pytest coverage codacy-coverage
 script:
   - printenv
   - ls -la
+  - coverage run -m py.test tests
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
 deploy:
   provider: pypi
   user: devopshq
@@ -20,3 +23,6 @@ deploy:
   skip_cleanup: true
 after_script:
   - echo "Deploy to PyPI finished."
+env:
+  global:
+  - secure: "jEMGwLJ8Ri1Ik3gvDUYuYsOWLJ8F7Ta3MmbeX//FasbDHtVrcIunnCI9q1ispBGjU+fXNmCK4Booysvv5FPt2YbgUbEejp2Nfp/FnWGyHl0htDLeE3pBd9nzs6JD6swnLiAz0r6Ds1fsPloMcJwbAKEjEjwqBsPKZ51n1z28xt1960ybIt0fMXsZzCne4bCqpA2EeLMX2oWP5f+l5+18nJK5hog6L8+zAgxJU3OAscv7IqkMlgcqw6X+DQ2q9IZYdPEJy5fc/zuKgHJK6PbjDLm82jYYbr125W60G9McuP8VSC1rtc2WoWPgL70C5DD7Ba9NOszbTSxyDvx/DUtMQsCiR5KBAFap/BJvaZiFuATU6mwvU/VsPVNrltEDjdlXIpYar9X97Ue8hW+HuCp+l1CKNIM01QrPgLs3W1FxIYyufG1BDqzsGgYJnfjaw/zW9fX4CNUunkba4yC3C3913ef3qY11EIgVfMlQh/hdtWAvuwExBFnm21afhRtHkyVrKeI3oFB/Ws3CAqCSL/AWZoHARjfcRiUXFW2t2b75bEKXUoEbZ8hFr5GmUAC53zFNeMz8YQdzYqbS9r6lImlVESgixiMRgqDxpBUh+uBPalqqWKR/YRuKOoB2SluY6NtgizSZCapItfl7hK++lHHEk3w48h9cQ5pya9Lv1GVMpnQ="

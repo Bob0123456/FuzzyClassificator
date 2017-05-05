@@ -25,9 +25,6 @@ else:
 print("FuzzyClassificator build version = {}".format(__version__))
 
 
-pytest.cmdline.main(["-k", "tests"])  # run all unit tests before building FuzzyClassificator
-
-
 setup(
     name='FuzzyClassificator',
 
