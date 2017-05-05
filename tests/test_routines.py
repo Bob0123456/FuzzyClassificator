@@ -124,3 +124,22 @@ class TestBaseMethods():
         ]
         for test in testData:
             assert FuzzyRoutines.FuzzyAND(test[0], test[1]) == test[2], 'Input: [ {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2])
+
+    def test_FuzzyOR(self):
+        testData = [
+            [0., 0., 0.],
+            [0., 1., 1.],
+            [1., 0., 1.],
+            [1., 1., 1.],
+            [0.5, 0.6, 0.6],
+            [0.7, 0.5, 0.7],
+            # negative tests:
+            [None, None, 1.],
+            [self, 0., 1.],
+            [-1., 0., 1.],
+            [0., -1., 1.],
+            [2., 2., 1.],
+            ['0.', '0.', 1.],
+        ]
+        for test in testData:
+            assert FuzzyRoutines.FuzzyOR(test[0], test[1]) == test[2], 'Input: [ {}, {} ] expected output: [ {} ]'.format(test[0], test[1], test[2])
