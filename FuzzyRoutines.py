@@ -132,7 +132,7 @@ def TNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
         if normType == 'logic':
@@ -166,7 +166,7 @@ def TNormCompose(*fuzzyNumbers, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if len(fuzzyNumbers) >= 1:
         result = fuzzyNumbers[0]
@@ -186,7 +186,7 @@ def SCoNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
         'boundary' - result of boundary addition operation,
         'drastic' - result of drastic addition operation.
     """
-    result = 1  # return 1 if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
         if normType == 'logic':
@@ -220,7 +220,7 @@ def SCoNormCompose(*fuzzyNumbers, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if len(fuzzyNumbers) >= 1:
         result = fuzzyNumbers[0]
