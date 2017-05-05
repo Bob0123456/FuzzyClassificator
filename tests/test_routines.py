@@ -337,3 +337,24 @@ class TestBaseMethods():
         ]
         for test in testDataNegative:
             assert FuzzyRoutines.SCoNorm(test[0], test[1], normType=test[2]) is test[3], 'Input: [ {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3])
+
+    def test_SCoNormCompose(self):
+        # positive tests:
+        testDataPositive = [
+            [0.1, 0.2, 0.3, 'logic', 0.3],
+            [0.1, 0.5, 0.5, 'algebraic', 0.775],
+            [0.5, 0.4, 0.05, 'boundary', 0.95],
+            [0.1, 0.2, 0.3, 'drastic', 1.],
+        ]
+        for test in testDataPositive:
+            assert round(FuzzyRoutines.SCoNormCompose(test[0], test[1], test[2], normType=test[3]), 5) == test[4], 'Input: [ {}, {}, {}, normType={} ] expected output: [ {} ]'.format(test[0], test[1], test[2], test[3], test[4])
+
+        # negative tests:
+        testDataNegative = [
+            [[], None],
+            [None, None],
+            ['0.1', None],
+            [self, None],
+        ]
+        for test in testDataNegative:
+            assert FuzzyRoutines.SCoNormCompose(test[0]) is test[1], 'Input: [ {} ] expected output: [ {} ]'.format(test[0], test[1])
