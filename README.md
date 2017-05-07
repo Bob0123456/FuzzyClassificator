@@ -37,6 +37,9 @@ FuzzyClassificator
 
 This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
 
+How does it work? Let see process scheme below.
+
+![Two Stage of Classification Process](classification_process.png "Two Stage of Classification Process")
 
 <a name="Chapter_2"></a>How to use
 --------------
