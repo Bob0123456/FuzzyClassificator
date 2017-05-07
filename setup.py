@@ -153,6 +153,7 @@ setup(
             'report.txt',
             'LICENSE',
             'README.md',
+            'classification_process.*',
         ],
     },
 
