@@ -684,7 +684,7 @@ class FuzzyNeuroNetwork(object):
     def ClassificationResults(self, fullEval=False, needFuzzy=False, showExpectedVector=True, printLog=True):
         """
         Method use for receiving results after activating Neuronet with all input vectors.
-        If fullEval = True then method calculate results for all input vectors, otherwise for first and last two input vectors.
+        fullEval is options to calculate results for all input vectors if True or not. False by default. Affects to speed.
         If needFuzzy = True then appropriate output values converting into fuzzy values after activating, otherwise used real values.
         If showExpectedVector = True then vector with expected results will shown in log and result file.
         If printLog = False then results not printing to log.

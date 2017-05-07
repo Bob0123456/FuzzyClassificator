@@ -55,6 +55,7 @@ sepSymbol = '\t'  # Separator symbol.
 
 reloadNetworkFromFile = False  # Reload or not Neuro Network from file before usage.
 noFuzzyOutput = False  # Show results with fuzzy values if False, otherwise show real values.
+showExpected = False  # Show expected results in Classify mode. WARNING! Use only if your dat-file contains columns with expected results to avoid errors!
 
 
 def ParseArgsMain(notAPI=True):
@@ -80,6 +81,7 @@ def ParseArgsMain(notAPI=True):
     parser.add_argument('-ir', '--ignore-row', type=str, help='Row indexes in input files that should be ignored. Use only dash and comma as separator numbers, other symbols are ignored. 1st raw always set as ignored. Example (no space after comma): 2,4-7')
     parser.add_argument('-sep', '--separator', type=str, help='Separator symbol in raw data files. SPACE and TAB are reserved, TAB used by default.')
     parser.add_argument('--no-fuzzy', action='store_true', help='Do not show fuzzy results, only real. False by default.')
+    parser.add_argument('--show-expected', action='store_true', help='Show expected results in Classify mode. WARNING! Use only if your dat-file contains columns with expected results!')
     parser.add_argument('--reload', action='store_true', help='Reload network from file before usage, False by default.')
     parser.add_argument('-u', '--update', type=int, help='Update error status after this epochs time, 5 by default. This parameter affected training speed.')
 
@@ -475,7 +477,7 @@ def CMStep4ActivatingNetworkForAllCandidateInputVectors(fNetwork):
     FCLogger.info(sepShort)
     FCLogger.info('Step 4. Activating network for all candidate input vectors.')
 
-    results = fNetwork.ClassificationResults(fullEval=True, needFuzzy=not(noFuzzyOutput), showExpectedVector=False)
+    results = fNetwork.ClassificationResults(fullEval=True, needFuzzy=not(noFuzzyOutput), showExpectedVector=showExpected)
 
     return results
 
@@ -553,6 +555,7 @@ def Main(learnParameters=None, classifyParameters=None):
     global ignoreRows
     global sepSymbol
     global noFuzzyOutput
+    global showExpected
     global reloadNetworkFromFile
     global epochsToUpdate
 
@@ -596,6 +599,9 @@ def Main(learnParameters=None, classifyParameters=None):
 
         if args.no_fuzzy:
             noFuzzyOutput = True
+
+        if args.show_expected:
+            showExpected = True
 
         if args.reload:
             reloadNetworkFromFile = args.reload  # reload neural network from given file before usage
