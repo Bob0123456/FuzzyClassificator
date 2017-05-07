@@ -539,7 +539,7 @@ def Main(learnParameters=None, classifyParameters=None):
     """
     Main function for classification routines.
     learnParameters and classifyParameters are dictionaries with the same parameters as used in CLI. Examples:
-    learnParameters = {"config": "3,3,2,2", "epochs:": 100, "rate": 0.5, "momentum": 0.5, "epsilon": 0.75, "stop": 1}
+    learnParameters = {"config": "3,3,2,2", "epochs": 100, "rate": 0.5, "momentum": 0.5, "epsilon": 0.75, "stop": 1}
     classifyParameters = {"config": "3,3,2,2"}
     If parameters are not defined then CLI-parameters are used.
     """

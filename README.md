@@ -315,7 +315,7 @@ Also you can run the same Learning mode command using API:
      
     parameters = {
         "config": "3,3,2,2",
-        "epochs:": 100,
+        "epochs": 100,
         "rate": 0.5,
         "momentum": 0.5,
         "epsilon": 0.75,
