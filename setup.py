@@ -3,7 +3,6 @@
 
 
 from setuptools import setup
-import pytest
 import os
 
 __version__ = '1.2'  # identify main version of FuzzyClassificator
@@ -32,7 +31,7 @@ setup(
 
     description='This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results.',
 
-    long_description=open('README.md').read(),
+    long_description='You can see detailed user manual here: https://devopshq.github.io/FuzzyClassificator/',
 
     license='MIT',
 
