@@ -17,8 +17,11 @@ FuzzyClassificator
     - [candidates.dat](#Chapter_3_2)
         - [Example of candidates.dat](#Chapter_3_2_1)
 - [Report of classificating](#Chapter_4)
-- [Work with program modules](#Chapter_5)
+- [Work with API](#Chapter_5)
     - [FuzzyClassificator.py](#Chapter_5_1)
+        - [API example to run Learning mode](#Chapter_5_1_1)
+        - [API example to run Classifying mode](#Chapter_5_1_2)
+        - [Another API parameters](#Chapter_5_1_3)
     - [PyBrainLearning.py](#Chapter_5_2)
     - [FuzzyRoutines.py](#Chapter_5_3)
         - [Work with membership functions](#Chapter_5_3_1)
@@ -48,7 +51,13 @@ Work contains two steps:
 
 <a name="Chapter_2_1"></a>**Presets**
 
-The simplest way to use FuzziClassificator without some troubles is to install Pyzo + Anaconda interpreter, which contains all needable scientific libraries. [Pyzo](http://www.pyzo.org/start.html) is a cross-platform Python IDE focused on interactivity and introspection, which makes it very suitable for scientific computing. [Anaconda](https://www.continuum.io/downloads) is the open data science platform powered by Python. The open source version of Anaconda is a high performance distribution of Python and includes most of the popular Python packages for scientific calculation. In all the examples below, we used an Anaconda Python interpreter.
+The simplest way to use FuzziClassificator without some troubles is to install Pyzo + Anaconda interpreter, which contains all needable scientific libraries.
+
+[Pyzo](http://www.pyzo.org/start.html) is a cross-platform Python IDE focused on interactivity and introspection, which makes it very suitable for scientific computing.
+
+[Anaconda](https://www.continuum.io/downloads) is the open data science platform powered by Python. The open source version of Anaconda is a high performance distribution of Python and includes most of the popular Python packages for scientific calculation.
+
+In all examples below, we used an Anaconda Python interpreter when you saw keyword "python".
 
 
 <a name="Chapter_2_2"></a>**Usage**
@@ -256,12 +265,16 @@ Then You'll get *report.text* file with information that looks like this:
         Input: ['0.76', '0.79', 'Max']	Output: ['Max', 'Min']
 
 
-<a name="Chapter_5"></a>Work with program modules
+<a name="Chapter_5"></a>Work with API
 --------------
 
 <a name="Chapter_5_1"></a>**FuzzyClassificator.py**
 
 This is main module which realizes user command-line interaction. Main methods are *LearningMode()* and *ClassifyingMode()* which provide similar program modes. The module provide user interface that implemented in PyBrainLearning.py.
+
+API use Main() function to work with both mode. The learnParameters in Main() used first and classifyParameters used second. If some of them defined they used with high priority than CLI parameters.
+
+Also you can use API Main() function to run Classify mode right after Learning mode.
 
 Learning mode contain steps realized by *LearningMode()*:
 
@@ -284,7 +297,89 @@ Classifying mode contains steps realized by *ClassifyingMode()*:
 
 The *ClassifyingMode()* method only runs calculations using the trained neural network.
 
-What are the console keys used to control the module - see above.
+Some examples are below.
+
+<a name="Chapter_5_1_1"></a>***API example to run Learning mode***
+
+When you run Learning mode in CLI, for example:
+
+    python FuzzyClassificator.py --debug-level=info -u 1 --learn config=3,3,2,2 epochs=100 rate=0.5 momentum=0.5 epsilon=0.75 stop=1
+
+Also you can run the same Learning mode command using API:
+
+    import FuzzyClassificator as FC
+    import FCLogger
+     
+    FCLogger.SetLevel("info")
+    FC.epochsToUpdate = 1
+     
+    parameters = {
+        "config": "3,3,2,2",
+        "epochs:": 100,
+        "rate": 0.5,
+        "momentum": 0.5,
+        "epsilon": 0.75,
+        "stop": 1
+    }
+     
+    FC.Main(learnParameters=parameters)  # Learning mode
+  
+<a name="Chapter_5_1_2"></a>***API example to run Classifying mode***
+
+When you run Classifying mode in CLI, for example:
+
+    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt  --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
+
+Also you can run the same Classifying mode command using API:
+
+    import FuzzyClassificator as FC
+    from FCLogger import SetLevel
+     
+    FC.candidatesDataFile = "candidates.dat"
+    FC.neuroNetworkFile = "network.xml"
+    FC.reportDataFile = "report.txt"
+    FC.sepSymbol = "TAB"
+    SetLevel("DEBUG")
+     
+    parameters = {
+        "config": "3,3,2,2",
+    }
+     
+    FC.Main(classifyParameters=parameters)  # Classifying mode
+
+<a name="Chapter_5_1_3"></a>***Another API parameters***
+
+    import FuzzyClassificator as FC  # Import main classificator's module
+     
+    # Start learning or classificating mode with parameters. 
+    # If parameters are not defined then CLI-parameters are used.
+    FC.Main(learnParameters=None, classifyParameters=None)
+     
+    FC.__version__  # Version of current FuzzyClassificator build.
+         
+    FC.ethalonsDataFile  # File with ethalon data samples, 'ethalons.dat' by default.
+         
+    FC.candidatesDataFile  # File with candidates data samples, 'candidates.dat' by default.
+         
+    FC.neuroNetworkFile  # File with Neuro Network configuration, 'network.xml' by default.
+     
+    FC.reportDataFile  # Report file with classification analysis, 'report.txt' by default.
+     
+    FC.bestNetworkFile  # Where best network saved, 'best_nn.xml' by default.
+     
+    FC.bestNetworkInfoFile  # Where information about best network saved, 'best_nn.txt' by default.
+     
+    FC.epochsToUpdate  # Epochs between error status updated, 5 by default.
+     
+    FC.ignoreColumns  # List of ignored columns. Empty list [] by default, e.g. FC.ignoreColumns = [1, 3].
+     
+    FC.ignoreRows  # List of ignored rows. [1] by default, e.g. FC.ignoreRows = [1, 3].
+     
+    FC.sepSymbol  # Separator symbol. TAB symbol '\t' used by default.
+     
+    FC.reloadNetworkFromFile  # Reload or not Neuro Network from file before usage. False by default.
+     
+    FC.noFuzzyOutput  # Show results with fuzzy values too if False (default). Show only real values in report if True.
 
 <a name="Chapter_5_2"></a>**PyBrainLearning.py**
 

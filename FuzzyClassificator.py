@@ -40,24 +40,24 @@ def Version(onlyPrint=False):
 
 __version__ = Version()  # set version of current FuzzyClassificator build
 
-ethalonsDataFile = 'ethalons.dat'  # file with ethalon data samples by default
-candidatesDataFile = 'candidates.dat'  # file with candidates data samples by default
-neuroNetworkFile = 'network.xml'  # file with Neuro Network configuration
-reportDataFile = 'report.txt'  # Report file with classification analysis
-bestNetworkFile = 'best_nn.xml'  # best network
-bestNetworkInfoFile = 'best_nn.txt'  # information about best network
+ethalonsDataFile = 'ethalons.dat'  # File with ethalon data samples.
+candidatesDataFile = 'candidates.dat'  # File with candidates data samples.
+neuroNetworkFile = 'network.xml'  # File with Neuro Network configuration.
+reportDataFile = 'report.txt'  # Report file with classification analysis.
+bestNetworkFile = 'best_nn.xml'  # Best network during the learns.
+bestNetworkInfoFile = 'best_nn.txt'  # File with information about best network during the learns.
 
-epochsToUpdate = 5  # epochs between error status updated
+epochsToUpdate = 5  # Epochs between error status updated.
 
 ignoreColumns = []  # List of ignored columns in input files.
 ignoreRows = [1]  # List of ignored rows in input files.
-sepSymbol = '\t'  # tab symbol used as separator by default
+sepSymbol = '\t'  # Separator symbol.
 
-reloadNetworkFromFile = False  # reload or not Neuro Network from file before usage
-noFuzzyOutput = False  # show results with fuzzy values if False, otherwise show real values
+reloadNetworkFromFile = False  # Reload or not Neuro Network from file before usage.
+noFuzzyOutput = False  # Show results with fuzzy values if False, otherwise show real values.
 
 
-def ParseArgsMain():
+def ParseArgsMain(notAPI=True):
     """
     Function get and parse command line keys.
     """
@@ -87,7 +87,7 @@ def ParseArgsMain():
     parser.add_argument('--classify', type=str, nargs='+', help='Start program in classificator mode with options (no space after comma): config=<inputs_num>,<layer1_num>,<layer2_num>,...,<outputs_num>')
 
     cmdArgs = parser.parse_args()
-    if not cmdArgs.version and ((cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify)):
+    if notAPI and not cmdArgs.version and ((cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify)):
         parser.print_help()
         sys.exit()
 
@@ -535,9 +535,13 @@ def ClassifyingMode(**inputParameters):
     return successFinish
 
 
-def Main():
+def Main(learnParameters=None, classifyParameters=None):
     """
-    Main function for setuptools routines.
+    Main function for classification routines.
+    learnParameters and classifyParameters are dictionaries with the same parameters as used in CLI. Examples:
+    learnParameters = {"config": "3,3,2,2", "epochs:": 100, "rate": 0.5, "momentum": 0.5, "epsilon": 0.75, "stop": 1}
+    classifyParameters = {"config": "3,3,2,2"}
+    If parameters are not defined then CLI-parameters are used.
     """
     global ethalonsDataFile
     global candidatesDataFile
@@ -552,7 +556,8 @@ def Main():
     global reloadNetworkFromFile
     global epochsToUpdate
 
-    args = ParseArgsMain()  # get and parse command-line parameters
+    notAPI = False if learnParameters or classifyParameters else False  # check if API or CLI work mode
+    args = ParseArgsMain(notAPI)  # parse another CLI parameters if they was
     exitCode = 0
 
     try:
@@ -598,22 +603,35 @@ def Main():
         if args.update:
             epochsToUpdate = args.update  # epochs before error status updating
 
-        if args.learn:
-            exitCode = int(not(LearningMode(**dict(kw.split('=') for kw in args.learn))))  # Learning mode
+        #  Execute Learning mode if API or CLI used:
+        if learnParameters:
+            exitCode = int(not(LearningMode(**learnParameters)))
 
-        elif args.classify:
-            exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))  # Classifying mode
+        elif args.learn:
+            exitCode = int(not(LearningMode(**dict(kw.split('=') for kw in args.learn))))
+
+        #  Execute Classifying mode if API or CLI used:
+        else:
+            if classifyParameters:
+                exitCode = int(not(ClassifyingMode(**classifyParameters)))
+
+            elif args.classify:
+                exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))
 
     except:
         exitCode = 1
         FCLogger.error(traceback.format_exc())
 
     finally:
-        FCLogger.info('FuzzyClassificator work finished.')
+        FCLogger.info('FuzzyClassificator work finished with exitCode = {}'.format(exitCode))
         FCLogger.info(sepLong)
 
-        DisableLogger(fileLogHandler)
-        sys.exit(exitCode)
+        if notAPI:
+            DisableLogger(fileLogHandler)
+            sys.exit(exitCode)
+
+        else:
+            return exitCode
 
 
 if __name__ == "__main__":
