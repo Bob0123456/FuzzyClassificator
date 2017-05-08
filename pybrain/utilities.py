@@ -1,6 +1,6 @@
-from __future__ import with_statement
+# -*- coding: utf-8 -*-
 
-__author__ = 'Tom Schaul, tom@idsia.ch; Justin Bayer, bayerj@in.tum.de'
+from __future__ import with_statement
 
 import gc
 import pickle
@@ -15,13 +15,17 @@ from random import random, choice
 
 from scipy import where, array, exp, zeros, size, mat, median
 
+__author__ = 'Tom Schaul, tom@idsia.ch; Justin Bayer, bayerj@in.tum.de'
+
+
 # file extension for load/save protocol mapping
 known_extensions = {
     'mat': 'matlab',
     'txt': 'ascii',
     'svm': 'libsvm',
     'pkl': 'pickle',
-    'nc' : 'netcdf' }
+    'nc': 'netcdf'
+}
 
 
 def abstractMethod():
@@ -149,42 +153,48 @@ class Serializable(object):
     supported.
     """
 
-    def saveToFileLike(self, flo, format=None, **kwargs):
+    def saveToFileLike(self, flo, formatObj=None, **kwargs):
         """Save the object to a given file like object in the given format.
         """
-        format = 'pickle' if format is None else format
-        save = getattr(self, "save_%s" % format, None)
+        formatObj = 'pickle' if formatObj is None else formatObj
+        save = getattr(self, "save_%s" % formatObj, None)
+
         if save is None:
-            raise ValueError("Unknown format '%s'." % format)
+            raise ValueError("Unknown format '%s'." % formatObj)
+
         save(flo, **kwargs)
 
     @classmethod
-    def loadFromFileLike(cls, flo, format=None):
+    def loadFromFileLike(cls, flo, formatObj=None):
         """Load the object to a given file like object with the given protocol.
         """
-        format = 'pickle' if format is None else format
-        load = getattr(cls, "load_%s" % format, None)
+        formatObj = 'pickle' if formatObj is None else formatObj
+        load = getattr(cls, "load_%s" % formatObj, None)
+
         if load is None:
-            raise ValueError("Unknown format '%s'." % format)
+            raise ValueError("Unknown format '%s'." % formatObj)
+
         return load(flo)
 
-    def saveToFile(self, filename, format=None, **kwargs):
+    def saveToFile(self, filename, formatObj=None, **kwargs):
         """Save the object to file given by filename."""
-        if format is None:
+        if formatObj is None:
             # try to derive protocol from file extension
-            format = formatFromExtension(filename)
-        with file(filename, 'wb') as fp:
-            self.saveToFileLike(fp, format, **kwargs)
+            formatObj = formatFromExtension(filename)
+
+        with open(filename, 'wb') as fp:
+            self.saveToFileLike(fp, formatObj, **kwargs)
 
     @classmethod
-    def loadFromFile(cls, filename, format=None):
+    def loadFromFile(cls, filename, formatObj=None):
         """Return an instance of the class that is saved in the file with the
         given filename in the specified format."""
-        if format is None:
+        if formatObj is None:
             # try to derive protocol from file extension
-            format = formatFromExtension(filename)
-        with file(filename, 'rbU') as fp:
-            obj = cls.loadFromFileLike(fp, format)
+            formatObj = formatFromExtension(filename)
+
+        with open(filename, 'rbU') as fp:
+            obj = cls.loadFromFileLike(fp, formatObj)
             obj.filename = filename
             return obj
 
@@ -485,8 +495,11 @@ def crossproduct(ss, row=None, level=0):
     if row is None:
         row = []
     if len(ss) > 1:
-        return reduce(operator.add,
-                      [crossproduct(ss[1:], row + [i], level + 1) for i in ss[0]])
+        import functools
+        return functools.reduce(
+            operator.add,
+            [crossproduct(ss[1:], row + [i], level + 1) for i in ss[0]]
+        )
     else:
         return [row + [i] for i in ss[0]]
 
@@ -539,7 +552,7 @@ def permuteToBlocks2d(arr, blockheight, blockwidth):
     _height, width = arr.shape
     arr = arr.flatten()
     new = zeros(size(arr))
-    for i in xrange(size(arr)):
+    for i in range(size(arr)):
         blockx = (i % width) / blockwidth
         blocky = i / width / blockheight
         blockoffset = blocky * width / blockwidth + blockx
@@ -785,4 +798,3 @@ def weightedUtest(g1, w1, g2, w2):
     z = (u1 - mu) / sigu
     conf = norm.cdf(z)
     return conf 
-
