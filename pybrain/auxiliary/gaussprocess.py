@@ -1,11 +1,12 @@
-__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de; Christian Osendorfer, osendorf@in.tum.de'
-
+# -*- coding: utf-8 -*-
 
 from scipy import r_, exp, zeros, eye, array, asarray, random, ravel, diag, sqrt, sin, cos, sort, mgrid, dot, floor
 from scipy import c_ #@UnusedImport
 from scipy.linalg import solve, inv
 from pybrain.datasets import SupervisedDataSet
 from scipy.linalg import norm
+
+__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de; Christian Osendorfer, osendorf@in.tum.de'
 
 
 class GaussianProcess:
@@ -51,12 +52,16 @@ class GaussianProcess:
     def _buildGrid(self):
         (start, stop, step) = (self.start, self.stop, self.step)
         """ returns a mgrid type of array for 'dim' dimensions """
-        if isinstance(start, (int, long, float, complex)):
-            dimstr = 'start:stop:step, '*self.indim
+        if isinstance(start, (int, float, complex)):
+            dimstr = 'start:stop:step, ' * self.indim
+
         else:
-            assert len(start) == len(stop) == len(step)
+            if not (len(start) == len(stop) == len(step)):
+                raise Exception("not len(start) == len(stop) == len(step)")
+
             dimstr = ["start[%i]:stop[%i]:step[%i], " % (i, i, i) for i in range(len(start))]
             dimstr = ''.join(dimstr)
+
         return eval('c_[map(ravel, mgrid[' + dimstr + '])]').T
 
     def _buildCov(self, a, b):
@@ -75,8 +80,11 @@ class GaussianProcess:
 
     def trainOnDataset(self, dataset):
         """ takes a SequentialDataSet with indim input dimension and scalar target """
-        assert (dataset.getDimension('input') == self.indim)
-        assert (dataset.getDimension('target') == 1)
+        if dataset.getDimension('input') != self.indim:
+            raise Exception("(dataset.getDimension('input') != self.indim)")
+
+        if dataset.getDimension('target') != 1:
+            raise Exception("dataset.getDimension('target') != 1")
 
         self.trainx = dataset.getField('input')
         self.trainy = ravel(dataset.getField('target'))
