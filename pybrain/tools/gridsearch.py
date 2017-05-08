@@ -1,9 +1,11 @@
-__author__ = 'Michael Isik'
-
+# -*- coding: utf-8 -*-
 
 from pybrain.tools.validation import CrossValidator
 from numpy import linspace, append, ones, zeros, array, where, apply_along_axis
 import copy
+
+__author__ = 'Michael Isik'
+
 
 class GridSearch2D:
     """ Abstract class providing a method for searching optimal metaparmeters
@@ -304,8 +306,6 @@ class GridSearchCostGamma(GridSearch2D):
         return trainer
 
 
-
-
 class GridSearchDOECostGamma(GridSearchDOE):
     """ Same as GridSearchCostGamma, except, that it uses the Design of Experiment (DOE)
         algorithm.
@@ -313,7 +313,10 @@ class GridSearchDOECostGamma(GridSearchDOE):
     def __init__(self, trainer, dataset, min_params=[-5, -15], max_params=[15, 3], n_iterations=5, **kwargs):
         """ See GridSearchCostGamma and GridSearchDOE """
         GridSearchDOE.__init__(self, min_params, max_params, n_iterations)
-        assert len(min_params) == 2
+
+        if len(min_params) != 2:
+            raise Exception("len(min_params) != 2")
+
         self._trainer = trainer
         self._dataset = dataset
 
@@ -331,7 +334,6 @@ class GridSearchDOECostGamma(GridSearchDOE):
             else:
                 GridSearchDOE.setArgs(self, **{key:value})
 
-
     def _validate(self, params):
         """ See GridSearchCostGamma """
         glob_idx = tuple(params)
@@ -345,14 +347,8 @@ class GridSearchDOECostGamma(GridSearchDOE):
             local_perf = perf[glob_idx]
         return local_perf
 
-
     def _getTrainerForParams(self, params):
         """ See GridSearchCostGamma """
         trainer = copy.deepcopy(self._trainer)
         trainer.setArgs(cost=2 ** params[0], gamma=2 ** params[1], ver=0)
         return trainer
-
-
-
-
-
