@@ -316,7 +316,7 @@ Some examples are below.
 
 When you run Learning mode in CLI, for example:
 
-    python FuzzyClassificator.py --debug-level=info -u 1 --learn config=3,3,2,2 epochs=100 rate=0.5 momentum=0.5 epsilon=0.75 stop=1
+    python FuzzyClassificator.py --debug-level=info -u 1 --learn config=3,3,2,2 epochs=100 rate=0.5 momentum=0.5 epsilon=0.05 stop=1
 
 Also you can run the same Learning mode command using API:
 
@@ -331,7 +331,7 @@ Also you can run the same Learning mode command using API:
         "epochs": 100,
         "rate": 0.5,
         "momentum": 0.5,
-        "epsilon": 0.75,
+        "epsilon": 0.05,
         "stop": 1
     }
 
