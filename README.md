@@ -184,7 +184,7 @@ Start learning with user's ethalon data file and neuronet options Config=(3,[3,2
 
 Classify all candidates from file candidates.dat and show result in report.txt:
 
-    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt --classify config=3,3,2,2 --separator=TAB --debug-level=DEBUG
+    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
 
 Where 'python' is full path to Pyzo Python 3.3.2 interpreter.
 
