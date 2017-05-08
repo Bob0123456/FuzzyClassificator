@@ -1,4 +1,4 @@
-__author__ = 'Tom Schaul, tom@idsia.ch'
+# -*- coding: utf-8 -*-
 
 from random import random, choice
 from scipy import zeros
@@ -6,7 +6,7 @@ from scipy import zeros
 from pybrain.utilities import Named
 from pybrain.rl.environments.environment import Environment
 
-# TODO: mazes can have any number of dimensions?
+__author__ = 'Tom Schaul, tom@idsia.ch'
 
 
 class Maze(Environment, Named):
@@ -52,9 +52,12 @@ class Maze(Environment, Named):
         self.setArgs(**args)
         self.mazeTable = topology
         self.goal = goal
-        if self.initPos == None:
+        self.bang = False
+
+        if self.initPos is None:
             self.initPos = self._freePos()
             self.initPos.remove(self.goal)
+
         self.reset()
 
     def reset(self):
@@ -65,24 +68,29 @@ class Maze(Environment, Named):
     def _freePos(self):
         """ produce a list of the free positions. """
         res = []
+
         for i, row in enumerate(self.mazeTable):
             for j, p in enumerate(row):
-                if p == False:
+                if p is False:
                     res.append((i, j))
+
         return res
 
-    def _moveInDir(self, pos, dir):
+    def _moveInDir(self, pos, direction):
         """ the new state after the movement in one direction. """
-        return (pos[0] + dir[0], pos[1] + dir[1])
+        return (pos[0] + direction[0], pos[1] + direction[1])
 
     def performAction(self, action):
         if self.stochAction > 0:
             if random() < self.stochAction:
                 action = choice(range(len(self.allActions)))
+
         tmp = self._moveInDir(self.perseus, self.allActions[action])
-        if self.mazeTable[tmp] == False:
+
+        if self.mazeTable[tmp] is False:
             self.perseus = tmp
             self.bang = False
+
         else:
             self.bang = True
 
