@@ -1,15 +1,18 @@
-__author__ = ('Thomas Rueckstiess, ruecksti@in.tum.de'
-              'Justin Bayer, bayer.justin@googlemail.com')
-
+# -*- coding: utf-8 -*-
 
 from scipy import zeros, asarray, sign, array, cov, dot, clip, ndarray
 from scipy.linalg import inv
+
+__author__ = ('Thomas Rueckstiess, ruecksti@in.tum.de'
+              'Justin Bayer, bayer.justin@googlemail.com')
 
 
 class GradientDescent(object):
 
     def __init__(self):
         """ initialize algorithms with standard parameters (typical values given in parentheses)"""
+
+        self.values = []
 
         # --- BackProp parameters ---
         # learning rate (0.1-0.001, down to 1e-7 for RNNs)
@@ -33,15 +36,17 @@ class GradientDescent(object):
         self.etaplus = 1.2
         self.etaminus = 0.5
         self.lastgradient = None
+        self.rprop_theta = 0.
 
     def init(self, values):
         """ call this to initialize data structures *after* algorithm to use
         has been selected
-
         :arg values: the list (or array) of parameters to perform gradient descent on
                        (will be copied, original not modified)
         """
-        assert isinstance(values, ndarray)
+        if not isinstance(values, ndarray):
+            raise Exception("{} is not instance of type {}".format(str(values), str(ndarray)))
+
         self.values = values.copy()
         if self.rprop:
             self.lastgradient = zeros(len(values), dtype='float64')
@@ -54,7 +59,9 @@ class GradientDescent(object):
     def __call__(self, gradient, error=None):
         """ calculates parameter change based on given gradient and returns updated parameters """
         # check if gradient has correct dimensionality, then make array """
-        assert len(gradient) == len(self.values)
+        if len(gradient) != len(self.values):
+            raise Exception("{} is not equal to {}".format(str(gradient), str(self.values)))
+
         gradient_arr = asarray(gradient)
 
         if self.rprop:
@@ -66,7 +73,7 @@ class GradientDescent(object):
             # update rprop meta parameters
             dirSwitch = self.lastgradient * gradient_arr
             rprop_theta[dirSwitch > 0] *= self.etaplus
-            idx =  dirSwitch < 0
+            idx = dirSwitch < 0
             rprop_theta[idx] *= self.etaminus
             gradient_arr[idx] = 0
 
@@ -97,6 +104,8 @@ class GradientDescent(object):
 class NaturalGradient(object):
 
     def __init__(self, samplesize):
+        self.values = []
+
         # Counter after how many samples a new gradient estimate will be
         # returned.
         self.samplesize = samplesize
@@ -110,14 +119,17 @@ class NaturalGradient(object):
         # Append a copy to make sure this one is not changed after by the
         # client.
         self.samples.append(array(gradient))
+
         # Return None if no new estimate is being given.
         if len(self.samples) < self.samplesize:
             return None
+
         # After all the samples have been put into a single array, we can
         # delete them.
         gradientarray = array(self.samples).T
         inv_covar = inv(cov(gradientarray))
         self.values += dot(inv_covar, gradientarray.sum(axis=1))
+
         return self.values
 
 
@@ -126,8 +138,17 @@ class IRpropPlus(object):
     def __init__(self, upfactor=1.1, downfactor=0.9, bound=0.5):
         self.upfactor = upfactor
         self.downfactor = downfactor
+
         if not bound > 0:
             raise ValueError("bound greater than 0 needed.")
+
+        self.bound = bound
+        self.values = None
+        self.prev_values = []
+        self.more_prev_values = []
+        self.previous_gradient = 0
+        self.step = 0
+        self.previous_error = 0.
 
     def init(self, values):
         self.values = values.copy()
@@ -142,21 +163,24 @@ class IRpropPlus(object):
         signs = sign(gradient)
 
         # For positive gradient parts.
-        positive = (products > 0).astype('int8')
+        positive = int(products > 0)
         pos_step = self.step * self.upfactor * positive
         clip(pos_step, -self.bound, self.bound)
         pos_update = self.values - signs * pos_step
 
         # For negative gradient parts.
-        negative = (products < 0).astype('int8')
+        negative = int(products < 0)
         neg_step = self.step * self.downfactor * negative
         clip(neg_step, -self.bound, self.bound)
+
         if error <= self.previous_error:
             # If the error has decreased, do nothing.
             neg_update = zeros(gradient.shape)
+
         else:
             # If it has increased, move back 2 steps.
             neg_update = self.more_prev_values
+
         # Set all negative gradients to zero for the next step.
         gradient *= positive
 
