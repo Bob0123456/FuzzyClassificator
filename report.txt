@@ -11,8 +11,8 @@ Classification results for candidates vectors:
 
     Header: [input1 input2 input3]	[1st_class_output 2nd_class_output]
     -----------------------------------------------------------------------
-    Input: ['0.12', '0.32', 'Min']	Output: ['Low', 'Med']
-    Input: ['0.32', '0.35', 'Low']	Output: ['Med', 'Med']
-    Input: ['0.54', '0.57', 'Med']	Output: ['High', 'Low']
+    Input: ['0.12', '0.32', 'Min']	Output: ['Med', 'Med']
+    Input: ['0.32', '0.35', 'Low']	Output: ['High', 'Low']
+    Input: ['0.54', '0.57', 'Med']	Output: ['Max', 'Min']
     Input: ['0.65', '0.68', 'High']	Output: ['Max', 'Min']
     Input: ['0.76', '0.79', 'Max']	Output: ['Max', 'Min']
