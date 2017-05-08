@@ -167,16 +167,16 @@ class EvolinoNetwork(Module):
     def _setLastOutput(self, output):
         self._out_layer.outputbuffer[self.offset - 1][:] = output
 
-
     # ======================================================== Genome related ===
-
 
     def _validateGenomeLayer(self, layer):
         """ Validates the type and state of a layer
         """
-        assert isinstance(layer, LSTMLayer)
-        assert not layer.peepholes
+        if not isinstance(layer, LSTMLayer):
+            raise Exception("{} must have type of {}".format(str(layer), str(LSTMLayer)))
 
+        if layer.peepholes:
+            raise Exception("{} must be False!".format(str(layer.peepholes)))
 
     def getGenome(self):
         """ Returns the Genome of the network.
@@ -484,16 +484,18 @@ class NetworkWrapper(object):
         assert len(self.network.outmodules) == 1
         return self.network.outmodules[0]
 
-
-
     def getOutputConnection(self):
         """ Returns the input connection of the output layer. """
         if self._output_connection is None:
             outlayer = self.getOutputLayer()
             lastlayer = self.getLastHiddenLayer()
+
             for c in self.getConnections():
                 if c.outmod is outlayer:
-                    assert c.inmod is lastlayer
+
+                    if c.inmod is not lastlayer:
+                        raise Exception("{} must have type of {}".format(str(c.inmod), str(lastlayer)))
+
                     self._output_connection = c
 
         return self._output_connection
