@@ -1,5 +1,4 @@
-__author__ = 'Michael Isik'
-
+# -*- coding: utf-8 -*-
 
 from numpy.random import permutation
 from numpy import array, array_split, apply_along_axis, concatenate, ones, dot, delete, append, zeros, argmax
@@ -8,6 +7,7 @@ from pybrain.datasets.importance import ImportanceDataSet
 from pybrain.datasets.sequential import SequentialDataSet
 from pybrain.datasets.supervised import SupervisedDataSet
 
+__author__ = 'Michael Isik'
 
 
 class Validator(object):
@@ -57,7 +57,10 @@ class Validator(object):
         # assert equal shapes
         output = array(output)
         target = array(target)
-        assert output.shape == target.shape
+
+        if output.shape != target.shape:
+            raise Exception("output.shape != target.shape")
+
         if importance is not None:
             assert importance.shape == target.shape
             importance = importance.flatten()
@@ -215,7 +218,7 @@ class ModuleValidator(object):
         outputs = []
         for seq in dataset._provideSequences():
             module.reset()
-            for i in xrange(len(seq)):
+            for i in range(len(seq)):
                 output = module.activate(seq[i][0])
                 outputs.append(output.copy())
         outputs = array(outputs)
@@ -370,7 +373,7 @@ def testOnSequenceData(module, dataset):
     # one-of-many values
     class_output = []
     class_target = []
-    for j in xrange(len(output)):
+    for j in range(len(output)):
         # sum up the output values of one sequence
         summed_output += output[j]
 #            print(j, output[j], " --> ", summed_output)
@@ -391,8 +394,3 @@ def testOnSequenceData(module, dataset):
 #    print(class_target)
 #    print(class_output)
     return Validator.classificationPerformance(class_output, class_target)
-
-
-
-
-
