@@ -1,7 +1,9 @@
-__author__ = 'Michael Isik'
-
+# -*- coding: utf-8 -*-
 
 from pybrain.supervised.evolino.variate import UniformVariate, GaussianVariate
+
+__author__ = 'Michael Isik'
+
 
 class Filter(object):
     """ Base class for all kinds of operators on the population during the
@@ -9,9 +11,11 @@ class Filter(object):
     """
     def __init__(self):
         pass
+
     def apply(self, population):
         """ Applies an operation on a population. """
         raise NotImplementedError()
+
 
 def isiter(obj):
     try:
@@ -19,7 +23,6 @@ def isiter(obj):
         return True
     except TypeError:
         return False
-
 
 
 class SimpleGenomeManipulation(Filter):
@@ -38,12 +41,16 @@ class SimpleGenomeManipulation(Filter):
                             If omitted, self._manipulateValue() is used.
                             See its documentation for the signature description.
         """
-        assert isiter(genome)
-        if manfunc is None:  manfunc = self._manipulateValue
+        if not isiter(genome):
+            raise Exception("genome must be iterable!")
+
+        if manfunc is None:
+            manfunc = self._manipulateValue
 
         for i, v in enumerate(genome):
             if isiter(v):
                 self._manipulateGenome(v, manfunc)
+
             else:
                 genome[i] = manfunc(v)
 
@@ -54,20 +61,16 @@ class SimpleGenomeManipulation(Filter):
         raise NotImplementedError()
 
 
-
 class SimpleMutation(SimpleGenomeManipulation):
     mutationVariate = None
     """ A simple mutation filter, which uses a gaussian variate per default
         for mutation.
     """
     def __init__(self):
-        """ :key kwargs: See setArgs() method documentation
-        """
         SimpleGenomeManipulation.__init__(self)
         self.mutationVariate = GaussianVariate()
         self.mutationVariate.alpha = 0.1
         self.verbosity = 0
-
 
     def apply(self, population):
         """ Apply the mutation to the population
@@ -93,10 +96,8 @@ class SimpleMutation(SimpleGenomeManipulation):
         self.mutationVariate.x0 = value
         newval = self.mutationVariate.getSample()
 #        print("MUTATED: ", value, "--->", newval)
+
         return newval
-
-
-
 
 
 class Randomization(SimpleGenomeManipulation):
@@ -107,6 +108,7 @@ class Randomization(SimpleGenomeManipulation):
         SimpleGenomeManipulation.__init__(self)
         self._minval = minval
         self._maxval = maxval
+        self._uniform_variate = None
 
     def apply(self, population):
         self._uniform_variate = UniformVariate(self._minval, self._maxval)
@@ -116,8 +118,3 @@ class Randomization(SimpleGenomeManipulation):
     def _manipulateValue(self, value):
         """ See SimpleGenomeManipulation._manipulateValue() for more information """
         return self._uniform_variate.getSample()
-
-
-
-
-
