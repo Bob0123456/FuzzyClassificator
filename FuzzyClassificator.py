@@ -121,7 +121,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
             # Parsing Neural Network Config parameter that looks like "config=inputs,layer1,layer2,...,outputs":
             config = tuple(int(par) for par in kwargs['config'].split(','))  # config for FuzzyNeuroNetwork
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Incorrect neural network config! Parameter config must looks like tuple of numbers: config=inputs,layer1,layer2,...,outputs')
@@ -130,7 +130,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             epochs = int(kwargs['epochs'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Epoch parameter might be an integer number greater or equal 1!')
@@ -139,7 +139,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             rate = float(kwargs['rate'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Rate parameter might be a float number greater than 0 and less or equal 1!')
@@ -148,7 +148,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             momentum = float(kwargs['momentum'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Momentum parameter might be a float number greater than 0 and less or equal 1!')
@@ -157,7 +157,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             epsilon = float(kwargs['epsilon'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Epsilon parameter might be a float number greater than 0 and less or equal 1!')
@@ -166,7 +166,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             stop = float(kwargs['stop'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Stop parameter might be a float number greater than 0 and less or equal 100!')
@@ -217,7 +217,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
             for line in str(fNetwork.scale).split('\n'):
                 FCLogger.debug(line)
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Failed to initialize the fuzzy network!')
@@ -385,7 +385,7 @@ def CMStep1CreatingPyBrainNetwork(**kwargs):
             # Parsing Neural Network Config parameter that looks like "config=inputs,layer1,layer2,...,outputs":
             config = tuple(int(par) for par in kwargs['config'].split(','))  # config for FuzzyNeuroNetwork
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Incorrect neural network config! Parameter config must looks like tuple of numbers: config=inputs,layer1,layer2,...,outputs')
@@ -417,7 +417,7 @@ def CMStep1CreatingPyBrainNetwork(**kwargs):
         for line in str(fNetwork.scale).split('\n'):
             FCLogger.debug(line)
 
-    except:
+    except Exception:
         noErrors = False
         FCLogger.error(traceback.format_exc())
         FCLogger.error('Failed to initialize the fuzzy network!')
@@ -624,7 +624,7 @@ def Main(learnParameters=None, classifyParameters=None):
             elif args.classify:
                 exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))
 
-    except:
+    except Exception:
         exitCode = 1
         FCLogger.error(traceback.format_exc())
 

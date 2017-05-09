@@ -633,7 +633,7 @@ class FuzzyScale():
             allLevels += '\n    {}'.format(str(level['fSet']))
 
         scaleView = '{} = {{{}}}{}'.format(self._name, allLevelsName, allLevels)
-        
+
         return scaleView
 
     @property
