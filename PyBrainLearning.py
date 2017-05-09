@@ -81,7 +81,7 @@ class FuzzyNeuroNetwork(object):
                     try:
                         num = float(itemValue)
 
-                    except:
+                    except Exception:
                         level = self.scale.GetLevelByName(levelName=itemValue.capitalize())
 
                         if level:

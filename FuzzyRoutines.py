@@ -704,7 +704,7 @@ class FuzzyScale():
         for level in self._levels[1:]:
             if fuzzyLevel['fSet'].mFunction.mju(realValue) <= level['fSet'].mFunction.mju(realValue):
                 fuzzyLevel = level
-                
+
         return fuzzyLevel
 
     def GetLevelByName(self, levelName, exactMatching=True):

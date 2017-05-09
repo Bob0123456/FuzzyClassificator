@@ -625,19 +625,19 @@ def Main(learnParameters=None, classifyParameters=None):
                 exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))
 
     except Exception:
-        exitCode = 1
         FCLogger.error(traceback.format_exc())
-
-    finally:
-        FCLogger.info('FuzzyClassificator work finished with exitCode = {}'.format(exitCode))
+        FCLogger.info('FuzzyClassificator work finished with exitCode = 1')
         FCLogger.info(sepLong)
 
-        if notAPI:
-            DisableLogger(fileLogHandler)
-            sys.exit(exitCode)
+    FCLogger.info('FuzzyClassificator work finished with exitCode = {}'.format(exitCode))
+    FCLogger.info(sepLong)
 
-        else:
-            return exitCode
+    if notAPI:
+        DisableLogger(fileLogHandler)
+        sys.exit(exitCode)
+
+    else:
+        return exitCode
 
 
 if __name__ == "__main__":
