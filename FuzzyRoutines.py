@@ -291,7 +291,7 @@ class MFunction():
             else:
                 result = 1 / (1 + (a * (x - c)) ** b)
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Hyperbolic membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_hyperbolic({}, {}, {}, {})'.format(x, a, b, c))
@@ -328,7 +328,7 @@ class MFunction():
                 self._parameters['a'] = aOld
                 self._parameters['b'] = bOld
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Bell membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_bell({}, {}, {}, {})'.format(x, a, b, c))
@@ -358,7 +358,7 @@ class MFunction():
             else:
                 result = 1
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Parabolic membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_parabolic({}, {}, {})'.format(x, a, b))
@@ -389,7 +389,7 @@ class MFunction():
             else:
                 result = 0
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Triangle membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_triangle({}, {}, {}, {})'.format(x, a, b, c))
@@ -424,7 +424,7 @@ class MFunction():
             else:
                 result = 0
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Trapezium membership function use real inputs x and parameters a, b, c, d.')
             FCLogger.error('Your inputs: mju_trapezium({}, {}, {}, {}, {})'.format(x, a, b, c, d))
@@ -445,7 +445,7 @@ class MFunction():
             if b != 0:
                 result = math.exp(1) ** (-0.5 * ((x - a) / b) ** 2)
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Exponential membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_exponential({}, {}, {})'.format(x, a, b))
@@ -465,7 +465,7 @@ class MFunction():
 
             result = 1 / (1 + math.exp(1) ** (-a * (x - b)))
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Sigmoidal membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_sigmoidal({}, {}, {})'.format(x, a, b))
@@ -477,12 +477,10 @@ class MFunction():
         """
         This is Harrington's desirability membership function with real input y without any parameters.
         """
-        result = 0
-
         try:
             result = math.exp(-math.exp(-y))
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error("Harrington's desirability membership function use only real input y without any parameters.")
             FCLogger.error('Your inputs: mju_desirability({})'.format(y))
@@ -629,7 +627,7 @@ class FuzzyScale():
         #     High = <Triangle(x, {"a": 0.7, "b": 1, "c": 1}), [0.0, 1.0]>
         allLevelsName = self._levels[0]['name']
         allLevels = '\n    {}'.format(self._levels[0]['fSet'].__str__())
-        
+
         for level in self._levels[1:]:
             allLevelsName += ', {}'.format(level['name'])
             allLevels += '\n    {}'.format(str(level['fSet']))
