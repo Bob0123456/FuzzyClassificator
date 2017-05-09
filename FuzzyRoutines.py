@@ -32,23 +32,18 @@ def DiapasonParser(diapason):
         for element in diapason.split(','):
             fullDiapason += [x for x in range(int(element.split('-')[0]), int(element.split('-')[-1]) + 1)]
 
-    except:
+    except Exception:
         FCLogger.error('"{}" is not correct diapason string!'.format(diapason))
-        fullDiapason = []
+        return []
 
-    finally:
-        return sorted(list(set(fullDiapason)))
+    return sorted(list(set(fullDiapason)))
 
 
 def IsNumber(value):
     """
-    Return True if value is float or integer number. 
+    Return True if value is float or integer number.
     """
-    if not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)):
-        return True
-
-    else:
-        return False
+    return bool(not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)))
 
 
 def IsCorrectFuzzyNumberValue(value):
@@ -297,13 +292,12 @@ class MFunction():
                 result = 1 / (1 + (a * (x - c)) ** b)
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Hyperbolic membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_hyperbolic({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Bell(self, x):
         """
@@ -335,13 +329,12 @@ class MFunction():
                 self._parameters['b'] = bOld
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Bell membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_bell({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Parabolic(self, x):
         """
@@ -366,13 +359,12 @@ class MFunction():
                 result = 1
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Parabolic membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_parabolic({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Triangle(self, x):
         """
@@ -398,13 +390,12 @@ class MFunction():
                 result = 0
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Triangle membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_triangle({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Trapezium(self, x):
         """
@@ -434,13 +425,12 @@ class MFunction():
                 result = 0
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Trapezium membership function use real inputs x and parameters a, b, c, d.')
             FCLogger.error('Your inputs: mju_trapezium({}, {}, {}, {}, {})'.format(x, a, b, c, d))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Exponential(self, x):
         """
@@ -456,13 +446,12 @@ class MFunction():
                 result = math.exp(1) ** (-0.5 * ((x - a) / b) ** 2)
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Exponential membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_exponential({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Sigmoidal(self, x):
         """
@@ -477,13 +466,12 @@ class MFunction():
             result = 1 / (1 + math.exp(1) ** (-a * (x - b)))
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Sigmoidal membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_sigmoidal({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Desirability(self, y):
         """
@@ -495,13 +483,12 @@ class MFunction():
             result = math.exp(-math.exp(-y))
 
         except:
-            result = 0
             FCLogger.error(traceback.format_exc())
             FCLogger.error("Harrington's desirability membership function use only real input y without any parameters.")
             FCLogger.error('Your inputs: mju_desirability({})'.format(y))
+            return 0
 
-        finally:
-            return result
+        return result
 
 
 class FuzzySet():
@@ -646,7 +633,7 @@ class FuzzyScale():
         for level in self._levels[1:]:
             allLevelsName += ', {}'.format(level['name'])
             allLevels += '\n    {}'.format(str(level['fSet']))
-        
+
         scaleView = '{} = {{{}}}{}'.format(self._name, allLevelsName, allLevels)
         
         return scaleView

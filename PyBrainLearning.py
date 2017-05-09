@@ -94,7 +94,7 @@ class FuzzyNeuroNetwork(object):
 
                 defuzData.append(defuzValues)
 
-        except:
+        except Exception:
             defuzData = []
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while defuzzyficating values in raw data!')
@@ -747,8 +747,6 @@ class FuzzyNeuroNetwork(object):
         """
         Realize training mechanism.
         """
-        noTrainErrors = True  # successful train flag
-
         try:
             if self._epochs > 0:
                 if self.trainer:
@@ -853,12 +851,11 @@ class FuzzyNeuroNetwork(object):
                 FCLogger.warning('Epoch of learning count is 0. Train not run!')
 
         except:
-            noTrainErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Training Fuzzy Network!')
+            return False
 
-        finally:
-            return noTrainErrors
+        return True
 
     def CreateReport(self, results=None, fuzzyOutput=True):
         """
@@ -867,8 +864,6 @@ class FuzzyNeuroNetwork(object):
         fuzzyOutput is a key for show fuzzy values if True.
         """
         FCLogger.debug('Creating Classificate Report File...')
-
-        noReportCreationErrors = True  # successful of Creating Report process flag
 
         try:
             if not results:
@@ -895,12 +890,11 @@ class FuzzyNeuroNetwork(object):
             FCLogger.info('Classificate Report File created: ' + os.path.abspath(self.reportFile))
 
         except:
-            noReportCreationErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Classificate Report creating!')
+            return False
 
-        finally:
-            return noReportCreationErrors
+        return True
 
 
 if __name__ == "__main__":
