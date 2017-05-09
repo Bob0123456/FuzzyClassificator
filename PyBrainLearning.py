@@ -386,7 +386,7 @@ class FuzzyNeuroNetwork(object):
             else:
                 FCLogger.warning('File with raw data not define or not exist!')
 
-        except:
+        except Exception:
             raw = []
             self.headers = []
             FCLogger.error(traceback.format_exc())
@@ -457,7 +457,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain dataset successfully prepared.')
 
-        except:
+        except Exception:
             learnData = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while preparing PyBrain dataset! Check your configuration parameters!')
@@ -505,7 +505,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain network successfully created.')
 
-        except:
+        except Exception:
             net = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while preparing PyBrain network!')
@@ -544,7 +544,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain network successfully created.')
 
-        except:
+        except Exception:
             backpropTrainer = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while creating PyBrain trainer!')
@@ -594,7 +594,7 @@ class FuzzyNeuroNetwork(object):
             try:
                 value = float(value)
 
-            except:
+            except Exception:
                 if isinstance(value, str):
                     level = self.scale.GetLevelByName(levelName=value.capitalize())
 
@@ -616,7 +616,7 @@ class FuzzyNeuroNetwork(object):
                 try:
                     value = float(value)
 
-                except:
+                except Exception:
                     if isinstance(value, str):
                         level = self.scale.GetLevelByName(levelName=value.capitalize())
 
@@ -850,7 +850,7 @@ class FuzzyNeuroNetwork(object):
             else:
                 FCLogger.warning('Epoch of learning count is 0. Train not run!')
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Training Fuzzy Network!')
             return False
@@ -889,7 +889,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('Classificate Report File created: ' + os.path.abspath(self.reportFile))
 
-        except:
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Classificate Report creating!')
             return False
