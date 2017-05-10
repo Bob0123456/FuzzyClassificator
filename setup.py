@@ -5,7 +5,7 @@
 from setuptools import setup
 import os
 
-__version__ = '1.2'  # identify main version of FuzzyClassificator
+__version__ = '1.3'  # identify main version of FuzzyClassificator
 
 if 'TRAVIS_BUILD_NUMBER' in os.environ and 'TRAVIS_BRANCH' in os.environ:
     print("This is TRAVIS-CI build")
