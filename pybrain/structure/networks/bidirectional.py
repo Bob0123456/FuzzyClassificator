@@ -1,10 +1,12 @@
-__author__ = 'Tom Schaul, tom@idsia.ch'
+# -*- coding: utf-8 -*-
 
 from pybrain.structure.modules import TanhLayer, SigmoidLayer
 from pybrain.structure.networks.feedforward import FeedForwardNetwork
 from pybrain.structure.connections.shared import MotherConnection, SharedFullConnection
 from pybrain.structure.modules.linearlayer import LinearLayer
 from pybrain.structure.modulemesh import ModuleMesh
+
+__author__ = 'Tom Schaul, tom@idsia.ch'
 
 
 class BidirectionalNetwork(FeedForwardNetwork):
@@ -31,7 +33,7 @@ class BidirectionalNetwork(FeedForwardNetwork):
     #: length of the sequences
     seqlen = None
 
-    def __init__(self, predefined = None, **kwargs):
+    def __init__(self, predefined=None, **kwargs):
         """ For the current implementation, the sequence length
         needs to be fixed, and given at construction time. """
         if predefined is not None:
@@ -39,7 +41,8 @@ class BidirectionalNetwork(FeedForwardNetwork):
         else:
             self.predefined = {}
         FeedForwardNetwork.__init__(self, **kwargs)
-        assert self.seqlen is not None
+        if self.seqlen is None:
+            raise Exception("seqlen must be not None!")
 
         # the input is a 1D-mesh (as a view on a flat input layer)
         inmod = LinearLayer(self.inputsize * self.seqlen, name='input')
@@ -90,5 +93,3 @@ class BidirectionalNetwork(FeedForwardNetwork):
                 self.addConnection(SharedFullConnection(backwardconn, hiddenmesh[(1, i + 1)], hiddenmesh[(1, i)]))
 
         self.sortModules()
-
-

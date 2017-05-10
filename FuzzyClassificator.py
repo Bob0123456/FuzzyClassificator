@@ -17,33 +17,57 @@ from FuzzyRoutines import *
 from FCLogger import *
 
 
+def Version(onlyPrint=False):
+    """
+    Return current version of FuzzyClassificator build
+    """
+    import pkg_resources  # part of standart setuptools
+
+    try:
+        version = pkg_resources.get_distribution('FuzzyClassificator').version
+
+    except Exception:
+        return 'unknown'
+
+    if onlyPrint:
+        FCLogger.level = 50
+        print(version)
+
+    return version
+
+
 # Constants and Global variables:
 
-ethalonsDataFile = 'ethalons.dat'  # file with ethalon data samples by default
-candidatesDataFile = 'candidates.dat'  # file with candidates data samples by default
-neuroNetworkFile = 'network.xml'  # file with Neuro Network configuration
-reportDataFile = 'report.txt'  # Report file with classification analysis
-bestNetworkFile = 'best_nn.xml'  # best network
-bestNetworkInfoFile = 'best_nn.txt'  # information about best network
+__version__ = Version()  # set version of current FuzzyClassificator build
 
-epochsToUpdate = 5  # epochs between error status updated
+ethalonsDataFile = 'ethalons.dat'  # File with ethalon data samples.
+candidatesDataFile = 'candidates.dat'  # File with candidates data samples.
+neuroNetworkFile = 'network.xml'  # File with Neuro Network configuration.
+reportDataFile = 'report.txt'  # Report file with classification analysis.
+bestNetworkFile = 'best_nn.xml'  # Best network during the learns.
+bestNetworkInfoFile = 'best_nn.txt'  # File with information about best network during the learns.
+
+epochsToUpdate = 5  # Epochs between error status updated.
 
 ignoreColumns = []  # List of ignored columns in input files.
 ignoreRows = [1]  # List of ignored rows in input files.
-sepSymbol = '\t'  # tab symbol used as separator by default
+sepSymbol = '\t'  # Separator symbol.
 
-reloadNetworkFromFile = False  # reload or not Neuro Network from file before usage
-noFuzzyOutput = False  # show results with fuzzy values if False, otherwise show real values
+reloadNetworkFromFile = False  # Reload or not Neuro Network from file before usage.
+noFuzzyOutput = False  # Show results with fuzzy values if False, otherwise show real values.
+showExpected = False  # Show expected results in Classify mode. WARNING! Use only if your dat-file contains columns with expected results to avoid errors!
 
 
-def ParseArgsMain():
+def ParseArgsMain(notAPI=True):
     """
     Function get and parse command line keys.
     """
     parser = argparse.ArgumentParser()  # command-line string parser
 
-    parser.description = 'This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results.'
-    parser.epilog = 'See examples on GitHub: https://github.com/Tim55667757/FuzzyClassificator FuzzyClassificator using Pyzo, http://www.pyzo.org - free and open-source computing environment, based on Python 3.3.2., and PyBrain library: http://pybrain.org'
+    parser.description = 'FuzzyClassificator version: {}. This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'.format(__version__)
+    parser.epilog = 'See examples on GitHub: https://devopshq.github.io/FuzzyClassificator/'
+
+    parser.add_argument('-v', '--version', action='store_true', help='Show current version of FuzzyClassificator.')
 
     parser.add_argument('-l', '--debug-level', type=str, help='Use 1, 2, 3, 4, 5 or DEBUG, INFO, WARNING, ERROR, CRITICAL debug info verbosity, INFO (2) by default.')
     parser.add_argument('-e', '--ethalons', type=str, help='File with ethalon data samples, ethalons.dat by default.')
@@ -57,6 +81,7 @@ def ParseArgsMain():
     parser.add_argument('-ir', '--ignore-row', type=str, help='Row indexes in input files that should be ignored. Use only dash and comma as separator numbers, other symbols are ignored. 1st raw always set as ignored. Example (no space after comma): 2,4-7')
     parser.add_argument('-sep', '--separator', type=str, help='Separator symbol in raw data files. SPACE and TAB are reserved, TAB used by default.')
     parser.add_argument('--no-fuzzy', action='store_true', help='Do not show fuzzy results, only real. False by default.')
+    parser.add_argument('--show-expected', action='store_true', help='Show expected results in Classify mode. WARNING! Use only if your dat-file contains columns with expected results!')
     parser.add_argument('--reload', action='store_true', help='Reload network from file before usage, False by default.')
     parser.add_argument('-u', '--update', type=int, help='Update error status after this epochs time, 5 by default. This parameter affected training speed.')
 
@@ -64,7 +89,7 @@ def ParseArgsMain():
     parser.add_argument('--classify', type=str, nargs='+', help='Start program in classificator mode with options (no space after comma): config=<inputs_num>,<layer1_num>,<layer2_num>,...,<outputs_num>')
 
     cmdArgs = parser.parse_args()
-    if (cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify):
+    if notAPI and not cmdArgs.version and ((cmdArgs.learn and cmdArgs.classify) or (not cmdArgs.learn and not cmdArgs.classify)):
         parser.print_help()
         sys.exit()
 
@@ -96,7 +121,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
             # Parsing Neural Network Config parameter that looks like "config=inputs,layer1,layer2,...,outputs":
             config = tuple(int(par) for par in kwargs['config'].split(','))  # config for FuzzyNeuroNetwork
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Incorrect neural network config! Parameter config must looks like tuple of numbers: config=inputs,layer1,layer2,...,outputs')
@@ -105,7 +130,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             epochs = int(kwargs['epochs'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Epoch parameter might be an integer number greater or equal 1!')
@@ -114,7 +139,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             rate = float(kwargs['rate'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Rate parameter might be a float number greater than 0 and less or equal 1!')
@@ -123,7 +148,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             momentum = float(kwargs['momentum'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Momentum parameter might be a float number greater than 0 and less or equal 1!')
@@ -132,7 +157,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             epsilon = float(kwargs['epsilon'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Epsilon parameter might be a float number greater than 0 and less or equal 1!')
@@ -141,7 +166,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
         try:
             stop = float(kwargs['stop'])
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Stop parameter might be a float number greater than 0 and less or equal 100!')
@@ -192,7 +217,7 @@ def LMStep1CreatingNetworkWithParameters(**kwargs):
             for line in str(fNetwork.scale).split('\n'):
                 FCLogger.debug(line)
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Failed to initialize the fuzzy network!')
@@ -313,6 +338,7 @@ def LearningMode(**inputParameters):
     successFinish = False  # success Learning Mode finish flag
 
     FCLogger.info(sepLong)
+    FCLogger.info('FuzzyClassificator version: {}'.format(__version__))
     FCLogger.info('Learning mode activated.')
     FCLogger.info('Log file: {}'.format(os.path.abspath(fileLogHandler.baseFilename)))
 
@@ -359,7 +385,7 @@ def CMStep1CreatingPyBrainNetwork(**kwargs):
             # Parsing Neural Network Config parameter that looks like "config=inputs,layer1,layer2,...,outputs":
             config = tuple(int(par) for par in kwargs['config'].split(','))  # config for FuzzyNeuroNetwork
 
-        except:
+        except Exception:
             noErrors = False
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Incorrect neural network config! Parameter config must looks like tuple of numbers: config=inputs,layer1,layer2,...,outputs')
@@ -391,7 +417,7 @@ def CMStep1CreatingPyBrainNetwork(**kwargs):
         for line in str(fNetwork.scale).split('\n'):
             FCLogger.debug(line)
 
-    except:
+    except Exception:
         noErrors = False
         FCLogger.error(traceback.format_exc())
         FCLogger.error('Failed to initialize the fuzzy network!')
@@ -451,7 +477,7 @@ def CMStep4ActivatingNetworkForAllCandidateInputVectors(fNetwork):
     FCLogger.info(sepShort)
     FCLogger.info('Step 4. Activating network for all candidate input vectors.')
 
-    results = fNetwork.ClassificationResults(fullEval=True, needFuzzy=not(noFuzzyOutput), showExpectedVector=False)
+    results = fNetwork.ClassificationResults(fullEval=True, needFuzzy=not(noFuzzyOutput), showExpectedVector=showExpected)
 
     return results
 
@@ -484,6 +510,7 @@ def ClassifyingMode(**inputParameters):
     successFinish = False  # success Classifying mode finish flag
 
     FCLogger.info(sepLong)
+    FCLogger.info('FuzzyClassificator version: {}'.format(__version__))
     FCLogger.info('Classificator mode activated.')
     FCLogger.info('Log file: {}'.format(os.path.abspath(fileLogHandler.baseFilename)))
 
@@ -510,11 +537,36 @@ def ClassifyingMode(**inputParameters):
     return successFinish
 
 
-if __name__ == "__main__":
-    args = ParseArgsMain()  # get and parse command-line parameters
+def Main(learnParameters=None, classifyParameters=None):
+    """
+    Main function for classification routines.
+    learnParameters and classifyParameters are dictionaries with the same parameters as used in CLI. Examples:
+    learnParameters = {"config": "3,3,2,2", "epochs": 100, "rate": 0.5, "momentum": 0.5, "epsilon": 0.75, "stop": 1}
+    classifyParameters = {"config": "3,3,2,2"}
+    If parameters are not defined then CLI-parameters are used.
+    """
+    global ethalonsDataFile
+    global candidatesDataFile
+    global neuroNetworkFile
+    global reportDataFile
+    global bestNetworkFile
+    global bestNetworkInfoFile
+    global ignoreColumns
+    global ignoreRows
+    global sepSymbol
+    global noFuzzyOutput
+    global showExpected
+    global reloadNetworkFromFile
+    global epochsToUpdate
+
+    notAPI = False if learnParameters or classifyParameters else False  # check if API or CLI work mode
+    args = ParseArgsMain(notAPI)  # parse another CLI parameters if they was
     exitCode = 0
 
     try:
+        if args.version:
+            Version(onlyPrint=True)  # Show current version of FuzzyClassificator
+
         if args.debug_level:
             SetLevel(args.debug_level)  # set up FCLogger level
 
@@ -548,25 +600,45 @@ if __name__ == "__main__":
         if args.no_fuzzy:
             noFuzzyOutput = True
 
+        if args.show_expected:
+            showExpected = True
+
         if args.reload:
             reloadNetworkFromFile = args.reload  # reload neural network from given file before usage
 
         if args.update:
             epochsToUpdate = args.update  # epochs before error status updating
 
-        if args.learn:
-            exitCode = int(not(LearningMode(**dict(kw.split('=') for kw in args.learn))))  # Learning mode
+        #  Execute Learning mode if API or CLI used:
+        if learnParameters:
+            exitCode = int(not(LearningMode(**learnParameters)))
 
-        elif args.classify:
-            exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))  # Classifying mode
+        elif args.learn:
+            exitCode = int(not(LearningMode(**dict(kw.split('=') for kw in args.learn))))
 
-    except:
-        exitCode = 1
+        #  Execute Classifying mode if API or CLI used:
+        else:
+            if classifyParameters:
+                exitCode = int(not(ClassifyingMode(**classifyParameters)))
+
+            elif args.classify:
+                exitCode = int(not(ClassifyingMode(**dict(kw.split('=') for kw in args.classify))))
+
+    except Exception:
         FCLogger.error(traceback.format_exc())
-
-    finally:
-        FCLogger.info('FuzzyClassificator work finished.')
+        FCLogger.info('FuzzyClassificator work finished with exitCode = 1')
         FCLogger.info(sepLong)
 
+    FCLogger.info('FuzzyClassificator work finished with exitCode = {}'.format(exitCode))
+    FCLogger.info(sepLong)
+
+    if notAPI:
         DisableLogger(fileLogHandler)
         sys.exit(exitCode)
+
+    else:
+        return exitCode
+
+
+if __name__ == "__main__":
+    Main()

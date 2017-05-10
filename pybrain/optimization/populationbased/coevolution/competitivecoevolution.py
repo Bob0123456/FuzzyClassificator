@@ -77,7 +77,7 @@ class CompetitiveCoevolution(Coevolution):
         fit = self._competitiveSharedFitness(self.pop, self.parasitePop)
         if hoFtournSize > 0:
             fitHof = self._competitiveSharedFitness(self.pop, self.hallOfFame)
-            fit = map(lambda (f1, f2): tournSize * f1 + hoFtournSize * f2, zip(fit, fitHof))
+            fit = map(lambda f1, f2: tournSize * f1 + hoFtournSize * f2, zip(fit, fitHof))
         return fit
 
     def _oneGeneration(self):
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     from pybrain.utilities import fListToString
     # TODO: convert to unittest
     C = CompetitiveCoevolution(None, [1, 2, 3, 4, 5, 6, 7, 8], populationSize=4)
+
     def b(x, y):
         C.allResults[(x, y)] = [1, 1, 1, []]
         C.allResults[(y, x)] = [-1, 1, -1, []]

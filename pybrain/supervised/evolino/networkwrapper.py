@@ -1,5 +1,4 @@
-__author__ = 'Michael Isik'
-
+# -*- coding: utf-8 -*-
 
 from pybrain.structure.networks.network     import Network
 from pybrain.structure.modules.lstm         import LSTMLayer
@@ -9,6 +8,8 @@ from pybrain.structure.modules.module       import Module
 from pybrain.structure.modules.biasunit     import BiasUnit
 
 from numpy import zeros, array, append
+
+__author__ = 'Michael Isik'
 
 
 class EvolinoNetwork(Module):
@@ -41,13 +42,19 @@ class EvolinoNetwork(Module):
     def reset(self):
         self._network.reset()
 
-
     def _washout(self, input, target, first_idx=None, last_idx=None):
-        assert self.indim == len(input[0])
-        assert self.outdim == len(target[0])
-        assert len(input) == len(target)
+        if self.indim != len(input[0]):
+            raise Exception("{} must be equal to {}".format(str(self.indim), str(len(input[0]))))
 
-        if first_idx is None: first_idx = 0
+        if self.outdim != len(target[0]):
+            raise Exception("{} must be equal to {}".format(str(self.outdim), str(len(target[0]))))
+
+        if len(input) != len(target):
+            raise Exception("{} must be equal to {}".format(str(len(input)), str(len(target))))
+
+        if first_idx is None:
+            first_idx = 0
+
         if last_idx  is None: last_idx = len(target) - 1
         raw_outputs = []
         for i in xrange(first_idx, last_idx + 1):
@@ -160,16 +167,16 @@ class EvolinoNetwork(Module):
     def _setLastOutput(self, output):
         self._out_layer.outputbuffer[self.offset - 1][:] = output
 
-
     # ======================================================== Genome related ===
-
 
     def _validateGenomeLayer(self, layer):
         """ Validates the type and state of a layer
         """
-        assert isinstance(layer, LSTMLayer)
-        assert not layer.peepholes
+        if not isinstance(layer, LSTMLayer):
+            raise Exception("{} must have type of {}".format(str(layer), str(LSTMLayer)))
 
+        if layer.peepholes:
+            raise Exception("{} must be False!".format(str(layer.peepholes)))
 
     def getGenome(self):
         """ Returns the Genome of the network.
@@ -477,16 +484,18 @@ class NetworkWrapper(object):
         assert len(self.network.outmodules) == 1
         return self.network.outmodules[0]
 
-
-
     def getOutputConnection(self):
         """ Returns the input connection of the output layer. """
         if self._output_connection is None:
             outlayer = self.getOutputLayer()
             lastlayer = self.getLastHiddenLayer()
+
             for c in self.getConnections():
                 if c.outmod is outlayer:
-                    assert c.inmod is lastlayer
+
+                    if c.inmod is not lastlayer:
+                        raise Exception("{} must have type of {}".format(str(c.inmod), str(lastlayer)))
+
                     self._output_connection = c
 
         return self._output_connection

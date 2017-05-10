@@ -81,7 +81,7 @@ class FuzzyNeuroNetwork(object):
                     try:
                         num = float(itemValue)
 
-                    except:
+                    except Exception:
                         level = self.scale.GetLevelByName(levelName=itemValue.capitalize())
 
                         if level:
@@ -94,7 +94,7 @@ class FuzzyNeuroNetwork(object):
 
                 defuzData.append(defuzValues)
 
-        except:
+        except Exception:
             defuzData = []
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while defuzzyficating values in raw data!')
@@ -369,7 +369,7 @@ class FuzzyNeuroNetwork(object):
                     if len(raw) <= 10:
                         for line in raw:
                             if len(line) <= 10:
-                                FCLogger.debug('    ' + line)
+                                FCLogger.debug('    ' + str(line))
 
                             else:
                                 FCLogger.debug('    [{}, {}, ..., {}, {}]'.format(line[0], line[1], line[-2], line[-1]))
@@ -386,7 +386,7 @@ class FuzzyNeuroNetwork(object):
             else:
                 FCLogger.warning('File with raw data not define or not exist!')
 
-        except:
+        except Exception:
             raw = []
             self.headers = []
             FCLogger.error(traceback.format_exc())
@@ -457,7 +457,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain dataset successfully prepared.')
 
-        except:
+        except Exception:
             learnData = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while preparing PyBrain dataset! Check your configuration parameters!')
@@ -505,7 +505,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain network successfully created.')
 
-        except:
+        except Exception:
             net = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while preparing PyBrain network!')
@@ -544,7 +544,7 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('PyBrain network successfully created.')
 
-        except:
+        except Exception:
             backpropTrainer = None
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while creating PyBrain trainer!')
@@ -594,7 +594,7 @@ class FuzzyNeuroNetwork(object):
             try:
                 value = float(value)
 
-            except:
+            except Exception:
                 if isinstance(value, str):
                     level = self.scale.GetLevelByName(levelName=value.capitalize())
 
@@ -616,7 +616,7 @@ class FuzzyNeuroNetwork(object):
                 try:
                     value = float(value)
 
-                except:
+                except Exception:
                     if isinstance(value, str):
                         level = self.scale.GetLevelByName(levelName=value.capitalize())
 
@@ -684,7 +684,7 @@ class FuzzyNeuroNetwork(object):
     def ClassificationResults(self, fullEval=False, needFuzzy=False, showExpectedVector=True, printLog=True):
         """
         Method use for receiving results after activating Neuronet with all input vectors.
-        If fullEval = True then method calculate results for all input vectors, otherwise for first and last two input vectors.
+        fullEval is options to calculate results for all input vectors if True or not. False by default. Affects to speed.
         If needFuzzy = True then appropriate output values converting into fuzzy values after activating, otherwise used real values.
         If showExpectedVector = True then vector with expected results will shown in log and result file.
         If printLog = False then results not printing to log.
@@ -747,8 +747,6 @@ class FuzzyNeuroNetwork(object):
         """
         Realize training mechanism.
         """
-        noTrainErrors = True  # successful train flag
-
         try:
             if self._epochs > 0:
                 if self.trainer:
@@ -852,13 +850,12 @@ class FuzzyNeuroNetwork(object):
             else:
                 FCLogger.warning('Epoch of learning count is 0. Train not run!')
 
-        except:
-            noTrainErrors = False
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Training Fuzzy Network!')
+            return False
 
-        finally:
-            return noTrainErrors
+        return True
 
     def CreateReport(self, results=None, fuzzyOutput=True):
         """
@@ -867,8 +864,6 @@ class FuzzyNeuroNetwork(object):
         fuzzyOutput is a key for show fuzzy values if True.
         """
         FCLogger.debug('Creating Classificate Report File...')
-
-        noReportCreationErrors = True  # successful of Creating Report process flag
 
         try:
             if not results:
@@ -894,13 +889,12 @@ class FuzzyNeuroNetwork(object):
 
             FCLogger.info('Classificate Report File created: ' + os.path.abspath(self.reportFile))
 
-        except:
-            noReportCreationErrors = False
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('An error occurred while Classificate Report creating!')
+            return False
 
-        finally:
-            return noReportCreationErrors
+        return True
 
 
 if __name__ == "__main__":

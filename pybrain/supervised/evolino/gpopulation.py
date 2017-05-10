@@ -7,7 +7,9 @@ class Population:
     """ Abstract template for a minimal Population.
         Implement just the methods you need.
     """
-    def __init__(self):pass
+    def __init__(self):
+        pass
+
     def getIndividuals(self):
         """ Should return a shallow copy of the individuals container, so that
             individuals can be manipulated, but not the set of individuals itself.
@@ -54,6 +56,7 @@ class SimplePopulation(Population):
         For descriptions of the methods please refer to the Population documentation.
     """
     def __init__(self):
+        super().__init__()
         self._individuals = set()
 #        self._fitness = collections.defaultdict( lambda: 0. )
 #        self._fitness = collections.defaultdict( lambda: -Infinity )
@@ -82,16 +85,14 @@ class SimplePopulation(Population):
     def removeIndividuals(self, individuals):
         for individual in individuals:
             self.removeIndividual(individual)
-#        self._individuals.difference_update(set(individuals))
-
+        # self._individuals.difference_update(set(individuals))
 
     def setIndividualFitness(self, individual, fitness):
         self._fitness[individual] = fitness
 
     def getIndividualFitness(self, individual):
-#        assert self._fitness.has_key(individual)
+        # assert self._fitness.has_key(individual)
         return self._fitness[individual]
-
 
     def clearFitness(self):
         """ Clears all stored fitness values """
@@ -107,8 +108,6 @@ class SimplePopulation(Population):
         """ Returns the maximal fitness value """
         return self.getIndividualFitness(self.getBestIndividuals(1))
 
-
-
     def getBestIndividuals(self, n):
         """ Returns n individuals with the highest fitness ranking.
             If n is greater than the number of individuals inside the population
@@ -118,7 +117,6 @@ class SimplePopulation(Population):
 
     def getBestIndividualsSorted(self, n):
         return self.getSortedIndividualList()[:n]
-
 
     def getWorstIndividuals(self, n):
         """ Returns the n individuals with the lowest fitness ranking.
@@ -135,12 +133,10 @@ class SimplePopulation(Population):
         inds = self.getWorstIndividuals(n)
         self.removeIndividuals(inds)
 
-
     def getSortedIndividualList(self):
         """ Returns a sorted list of all individuals with descending fitness values. """
         fitness = self._fitness
-        return sorted(fitness.iterkeys(), key=lambda(k):-fitness[k])
-
+        return sorted(fitness.iterkeys(), key=lambda k: -fitness[k])
 
     def getIndividualsN(self):
         """ Returns the number of individuals inside the population """

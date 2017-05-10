@@ -1,4 +1,4 @@
-__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
+# -*- coding: utf-8 -*-
 
 import sys, time
 from scipy import random, asarray
@@ -12,6 +12,9 @@ from pybrain.utilities import threaded
 import threading
 import warnings
 from pybrain.tools.networking.udpconnection import UDPServer
+
+__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
+
 
 class ODEEnvironment(Environment):
     """
@@ -210,7 +213,6 @@ class ODEEnvironment(Environment):
         # now parse the additional parameters at the end of the xode file
         self.loadConfig(filename, reload)
 
-
     def loadConfig(self, filename, reload=False):
         # parameters are given in (our own brand of) config-file syntax
         self.config = ConfigGrabber(filename, sectionId="<!--odeenvironment parameters", delim=("<", ">"))
@@ -219,6 +221,7 @@ class ODEEnvironment(Environment):
         self.passpairs = []
         for passpairstring in self.config.getValue("passpairs")[:]:
             self.passpairs.append(eval(passpairstring))
+
         if self.verbosity > 0:
             print("-------[pass tuples]--------")
             print(self.passpairs)

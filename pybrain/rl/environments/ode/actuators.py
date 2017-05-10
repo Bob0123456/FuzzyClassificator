@@ -1,8 +1,11 @@
-__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
+# -*- coding: utf-8 -*-
 
 import ode, xode #@UnresolvedImport
 from pybrain.utilities import Named
 import sys, warnings
+
+__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
+
 
 class Actuator(Named):
     """The base Actuator class. Every actuator has a name, and a list of values (even if it is
@@ -27,13 +30,14 @@ class Actuator(Named):
         return self._numValues
 
 
-
 class JointActuator(Actuator):
-    ''' This actuator parses the xode root node for all joints and applies a torque
-        to the angles of each of them. Different joints have a different number of values (e.g.
-        a hinge2 joints has two degrees of freedom, whereas a slider joint has only one).
-        However, calling the function getValues(), will return a flat list of all the
-        degrees of freedom of all joints.'''
+    """
+    This actuator parses the xode root node for all joints and applies a torque
+    to the angles of each of them. Different joints have a different number of values (e.g.
+    a hinge2 joints has two degrees of freedom, whereas a slider joint has only one).
+    However, calling the function getValues(), will return a flat list of all the
+    degrees of freedom of all joints.
+    """
 
     def __init__(self, name='JointActuator'):
         Actuator.__init__(self, name, 0)
@@ -45,6 +49,7 @@ class JointActuator(Actuator):
             joint = node.getODEObject()
             joint.name = node.getName()
             self._joints.append(joint)
+
         # recursive call for children
         for c in node.getChildren():
             self._parseJoints(c)
@@ -77,7 +82,9 @@ class JointActuator(Actuator):
         return num
 
     def _update(self, action):
-        assert (len(action) == self._numValues)
+        if len(action) != self._numValues:
+            raise Exception("{} not equal to {}".format(str(len(action)), str(self._numValues)))
+
         for j in self._joints:
             if type(j) == ode.BallJoint:
                 # ball joints can't be controlled yet
@@ -112,7 +119,9 @@ class JointActuator(Actuator):
 
 
 class SpecificJointActuator(JointActuator):
-    ''' This sensor takes a list of joint names, and controlls only their values. '''
+    """
+    This sensor takes a list of joint names, and controlls only their values.
+    """
 
     def __init__(self, jointNames, name=None):
         Actuator.__init__(self, name, 0)
@@ -140,8 +149,10 @@ class SpecificJointActuator(JointActuator):
 
 
 class CopyJointActuator(JointActuator):
-    ''' This sensor takes a list of joint names and controls all joints at once (one single value,
-        even for multiple hinges/amotors) '''
+    """
+    This sensor takes a list of joint names and controls all joints at once (one single value,
+        even for multiple hinges/amotors)
+    """
 
     def __init__(self, jointNames, name=None):
         Actuator.__init__(self, name, 0)
@@ -197,4 +208,3 @@ class CopyJointActuator(JointActuator):
                 # therefore, you can (must) set a torque but it is not applied
                 # to the joint.
                 pass
-

@@ -224,7 +224,7 @@ class Coevolution(Named):
                 if self._beats(p, opp) > 0:
                     beaten.append(opp)
             tmp[p] = beaten
-        beatlist = map(lambda (p, beaten): (len(beaten), self._globalScore(p), p), tmp.items())
+        beatlist = map(lambda p, beaten: (len(beaten), self._globalScore(p), p), tmp.items())
         shuffle(beatlist)
         beatlist.sort(key=lambda x: x[:2])
         best = beatlist[-1][2]

@@ -32,39 +32,40 @@ def DiapasonParser(diapason):
         for element in diapason.split(','):
             fullDiapason += [x for x in range(int(element.split('-')[0]), int(element.split('-')[-1]) + 1)]
 
-    except:
+    except Exception:
         FCLogger.error('"{}" is not correct diapason string!'.format(diapason))
-        fullDiapason = []
+        return []
 
-    finally:
-        return sorted(list(set(fullDiapason)))
+    return sorted(list(set(fullDiapason)))
+
+
+def IsNumber(value):
+    """
+    Return True if value is float or integer number.
+    """
+    return bool(not isinstance(value, bool) and (isinstance(value, int) or isinstance(value, float)))
 
 
 def IsCorrectFuzzyNumberValue(value):
     """
     All operations in fuzzy logic are executed with numbers in interval [0, 1].
     """
-    correctNumberFlag = True
+    if IsNumber(value):
+        return (0. <= value) and (value <= 1.)
 
-    try:
-        correctNumberFlag = (0 <= value <= 1)
-
-    except:
-        FCLogger.error('{} is number not in [0, 1]!'.format(value))
-        correctNumberFlag = False
-
-    finally:
-        return correctNumberFlag
+    else:
+        FCLogger.error('{} not a real number in [0, 1], type = {}'.format(str(value), type(value)))
+        return False
 
 
 def FuzzyNOT(fuzzyNumber, alpha=0.5):
     """
     Fuzzy logic NOT operator. y = 1 - Fuzzy if alpha = 0.5
     """
-    result = fuzzyNumber  # return input number if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and alpha > 0:
-        if (0 <= fuzzyNumber <= alpha):
+        if (0 <= fuzzyNumber) and (fuzzyNumber <= alpha):
             result = fuzzyNumber * (alpha - 1) / alpha + 1
 
         else:
@@ -77,9 +78,9 @@ def FuzzyNOTParabolic(fuzzyNumber, alpha=0.5, epsilon=0.001):
     """
     Parabolic fuzzy NOT operator. 2a - x - y = (2a - 1)(y - x)^2.
     """
-    result = fuzzyNumber  # return input number if errors
+    result = None  # return None if errors
 
-    if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and alpha > 0:
+    if IsCorrectFuzzyNumberValue(fuzzyNumber) and IsCorrectFuzzyNumberValue(alpha) and IsCorrectFuzzyNumberValue(epsilon) and alpha > 0:
         if fuzzyNumber == 0:
             result = 1
 
@@ -95,28 +96,26 @@ def FuzzyNOTParabolic(fuzzyNumber, alpha=0.5, epsilon=0.001):
     return result
 
 
-def FuzzyAND(aFuzzyNumber, bFuzzyNumber):
+def FuzzyAND(aNumber, bNumber):
     """
     Fuzzy AND operator is minimum of two numbers.
     """
-    result = 0  # return 0 if errors
+    if IsNumber(aNumber) and IsNumber(bNumber):
+        return min(aNumber, bNumber)
 
-    if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
-        result = min(aFuzzyNumber, bFuzzyNumber)
-
-    return result
+    else:
+        return None  # return None if errors
 
 
-def FuzzyOR(aFuzzyNumber, bFuzzyNumber):
+def FuzzyOR(aNumber, bNumber):
     """
     Fuzzy OR operator is maximum of two numbers.
     """
-    result = 1  # return 1 if errors
+    if IsNumber(aNumber) and IsNumber(bNumber):
+        return max(aNumber, bNumber)
 
-    if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
-        result = max(aFuzzyNumber, bFuzzyNumber)
-
-    return result
+    else:
+        return None  # return None if errors
 
 
 def TNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
@@ -128,7 +127,7 @@ def TNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
         if normType == 'logic':
@@ -162,10 +161,11 @@ def TNormCompose(*fuzzyNumbers, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if len(fuzzyNumbers) >= 1:
-        result = fuzzyNumbers[0]
+        if IsNumber(fuzzyNumbers[0]):
+            result = fuzzyNumbers[0]
 
         for f in fuzzyNumbers[1:]:
             result = TNorm(result, f, normType)
@@ -182,7 +182,7 @@ def SCoNorm(aFuzzyNumber, bFuzzyNumber, normType='logic'):
         'boundary' - result of boundary addition operation,
         'drastic' - result of drastic addition operation.
     """
-    result = 1  # return 1 if errors
+    result = None  # return None if errors
 
     if IsCorrectFuzzyNumberValue(aFuzzyNumber) and IsCorrectFuzzyNumberValue(bFuzzyNumber):
         if normType == 'logic':
@@ -216,10 +216,11 @@ def SCoNormCompose(*fuzzyNumbers, normType='logic'):
         'boundary' - result of boundary multiplication operation,
         'drastic' - result of drastic multiplication operation.
     """
-    result = 0  # return 0 if errors
+    result = None  # return None if errors
 
     if len(fuzzyNumbers) >= 1:
-        result = fuzzyNumbers[0]
+        if IsNumber(fuzzyNumbers[0]):
+            result = fuzzyNumbers[0]
 
         for f in fuzzyNumbers[1:]:
             result = SCoNorm(result, f, normType)
@@ -290,14 +291,13 @@ class MFunction():
             else:
                 result = 1 / (1 + (a * (x - c)) ** b)
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Hyperbolic membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_hyperbolic({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Bell(self, x):
         """
@@ -328,14 +328,13 @@ class MFunction():
                 self._parameters['a'] = aOld
                 self._parameters['b'] = bOld
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Bell membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_bell({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Parabolic(self, x):
         """
@@ -359,14 +358,13 @@ class MFunction():
             else:
                 result = 1
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Parabolic membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_parabolic({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Triangle(self, x):
         """
@@ -391,14 +389,13 @@ class MFunction():
             else:
                 result = 0
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Triangle membership function use real inputs x and parameters a, b, c.')
             FCLogger.error('Your inputs: mju_triangle({}, {}, {}, {})'.format(x, a, b, c))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Trapezium(self, x):
         """
@@ -427,14 +424,13 @@ class MFunction():
             else:
                 result = 0
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Trapezium membership function use real inputs x and parameters a, b, c, d.')
             FCLogger.error('Your inputs: mju_trapezium({}, {}, {}, {}, {})'.format(x, a, b, c, d))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Exponential(self, x):
         """
@@ -449,14 +445,13 @@ class MFunction():
             if b != 0:
                 result = math.exp(1) ** (-0.5 * ((x - a) / b) ** 2)
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Exponential membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_exponential({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Sigmoidal(self, x):
         """
@@ -470,32 +465,28 @@ class MFunction():
 
             result = 1 / (1 + math.exp(1) ** (-a * (x - b)))
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error('Sigmoidal membership function use real inputs x and parameters a, b.')
             FCLogger.error('Your inputs: mju_sigmoidal({}, {}, {})'.format(x, a, b))
+            return 0
 
-        finally:
-            return result
+        return result
 
     def Desirability(self, y):
         """
         This is Harrington's desirability membership function with real input y without any parameters.
         """
-        result = 0
-
         try:
             result = math.exp(-math.exp(-y))
 
-        except:
-            result = 0
+        except Exception:
             FCLogger.error(traceback.format_exc())
             FCLogger.error("Harrington's desirability membership function use only real input y without any parameters.")
             FCLogger.error('Your inputs: mju_desirability({})'.format(y))
+            return 0
 
-        finally:
-            return result
+        return result
 
 
 class FuzzySet():
@@ -636,13 +627,13 @@ class FuzzyScale():
         #     High = <Triangle(x, {"a": 0.7, "b": 1, "c": 1}), [0.0, 1.0]>
         allLevelsName = self._levels[0]['name']
         allLevels = '\n    {}'.format(self._levels[0]['fSet'].__str__())
-        
+
         for level in self._levels[1:]:
             allLevelsName += ', {}'.format(level['name'])
             allLevels += '\n    {}'.format(str(level['fSet']))
-        
+
         scaleView = '{} = {{{}}}{}'.format(self._name, allLevelsName, allLevels)
-        
+
         return scaleView
 
     @property
@@ -713,7 +704,7 @@ class FuzzyScale():
         for level in self._levels[1:]:
             if fuzzyLevel['fSet'].mFunction.mju(realValue) <= level['fSet'].mFunction.mju(realValue):
                 fuzzyLevel = level
-                
+
         return fuzzyLevel
 
     def GetLevelByName(self, levelName, exactMatching=True):
@@ -784,36 +775,36 @@ class UniversalFuzzyScale(FuzzyScale):
 
 
 if __name__ == "__main__":
-    ## Some examples (just run this FuzzyRoutines module):
+    # Some examples (just run this FuzzyRoutines module):
 
-    ## --- Usage of some membership functions (uncomment one of them):
+    # --- Usage of some membership functions (uncomment one of them):
 
-    #mjuPars = {'a': 7, 'b': 4, 'c': 0}  # hyperbolic params example
-    #funct = MFunction(userFunc='hyperbolic', **mjuPars)  # creating instance of hyperbolic function
+    # mjuPars = {'a': 7, 'b': 4, 'c': 0}  # hyperbolic params example
+    # funct = MFunction(userFunc='hyperbolic', **mjuPars)  # creating instance of hyperbolic function
 
-    #mjuPars = {'a': 0, 'b': 0.3, 'c': 0.4}  # bell params example
-    #funct = MFunction(userFunc='bell', **mjuPars)  # creating instance of bell function
+    # mjuPars = {'a': 0, 'b': 0.3, 'c': 0.4}  # bell params example
+    # funct = MFunction(userFunc='bell', **mjuPars)  # creating instance of bell function
 
-    #mjuPars = {'a': 0, 'b': 1}  # parabolic params example
-    #funct = MFunction(userFunc='parabolic', **mjuPars)  # creating instance of parabolic function
+    # mjuPars = {'a': 0, 'b': 1}  # parabolic params example
+    # funct = MFunction(userFunc='parabolic', **mjuPars)  # creating instance of parabolic function
 
-    #mjuPars = {'a': 0.2, 'b': 0.8, 'c': 0.7}  # triangle params example
-    #funct = MFunction(userFunc='triangle', **mjuPars)  # creating instance of triangle function
+    # mjuPars = {'a': 0.2, 'b': 0.8, 'c': 0.7}  # triangle params example
+    # funct = MFunction(userFunc='triangle', **mjuPars)  # creating instance of triangle function
 
     mjuPars = {'a': 0.1, 'b': 1, 'c': 0.5, 'd': 0.8}  # trapezium params example
     funct = MFunction(userFunc='trapezium', **mjuPars)  # creating instance of trapezium function
 
-    #mjuPars = {'a': 0.5, 'b': 0.15}  # exponential params example
-    #funct = MFunction(userFunc='exponential', **mjuPars)  # creating instance of exponential function
+    # mjuPars = {'a': 0.5, 'b': 0.15}  # exponential params example
+    # funct = MFunction(userFunc='exponential', **mjuPars)  # creating instance of exponential function
 
-    #mjuPars = {'a': 15, 'b': 0.5}  # sigmoidal params example
-    #funct = MFunction(userFunc='sigmoidal', **mjuPars)  # creating instance of sigmoidal function
+    # mjuPars = {'a': 15, 'b': 0.5}  # sigmoidal params example
+    # funct = MFunction(userFunc='sigmoidal', **mjuPars)  # creating instance of sigmoidal function
 
-    #funct = MFunction(userFunc='desirability')  # creating instance of desirability function without parameters
+    # funct = MFunction(userFunc='desirability')  # creating instance of desirability function without parameters
 
     print('Printing Membership function with parameters: ', funct)
 
-    ## --- Calculating some function's values in [0, 1]:
+    # --- Calculating some function's values in [0, 1]:
 
     xPar = 0
     for i in range(0, 11, 1):
@@ -821,7 +812,7 @@ if __name__ == "__main__":
         res = funct.mju(xPar)  # calculate one value of MF with given parameters
         print('{} = {:1.4f}'.format(funct, res))
 
-    ## --- Work with fuzzy set:
+    # --- Work with fuzzy set:
 
     fuzzySet = FuzzySet(funct, (0., 1.))  # creating fuzzy set A = <mju_funct, support_set>
     print('Printing fuzzy set after init and before changes:', fuzzySet)
@@ -841,11 +832,11 @@ if __name__ == "__main__":
     print('New value of Defuz({}) = {:1.2f}'.format(fuzzySet.name, fuzzySet.Defuz()))
     print('Printing fuzzy set after changes:', fuzzySet)
 
-    ## --- Work with fuzzy scales:
-    ## Fuzzy scale is an ordered set of linguistic variables that looks like this:
-    ## S = [{'name': 'name_1', 'fSet': fuzzySet_1}, {'name': 'name_2', 'fSet': fuzzySet_2}, ...],
-    ##     where name is a linguistic name of fuzzy set,
-    ##     fSet is a user define fuzzy set of FuzzySet type.
+    # --- Work with fuzzy scales:
+    # Fuzzy scale is an ordered set of linguistic variables that looks like this:
+    # S = [{'name': 'name_1', 'fSet': fuzzySet_1}, {'name': 'name_2', 'fSet': fuzzySet_2}, ...],
+    #     where name is a linguistic name of fuzzy set,
+    #     fSet is a user define fuzzy set of FuzzySet type.
     scale = FuzzyScale()  # intialize new fuzzy scale with default levels
 
     print('Printing default fuzzy scale in human-readable:', scale)
@@ -880,8 +871,8 @@ if __name__ == "__main__":
     for item in scale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-    ## --- Work with Universal Fuzzy Scale:
-    ## Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
+    # --- Work with Universal Fuzzy Scale:
+    # Universal fuzzy scales S_f = {Min, Low, Med, High, Max} pre-defined in UniversalFuzzyScale() class.
 
     uniFScale = UniversalFuzzyScale()
     print('Levels of Universal Fuzzy Scale:', uniFScale.levels)
@@ -891,7 +882,7 @@ if __name__ == "__main__":
     for item in uniFScale.levels:
         print('Defuz({}) = {:1.2f}'.format(item['name'], item['fSet'].Defuz()))
 
-    ## Use Fuzzy() function to looking for level on Fuzzy Scale:
+    # Use Fuzzy() function to looking for level on Fuzzy Scale:
 
     xPar = 0
     for i in range(0, 10, 1):
@@ -899,7 +890,7 @@ if __name__ == "__main__":
         res = uniFScale.Fuzzy(xPar)  # calculate fuzzy level for some real values
         print('Fuzzy({:1.1f}, {}) = {}, {}'.format(xPar, uniFScale.name, res['name'], res['fSet']))
 
-    ## Finding fuzzy level using GetLevelByName() function:
+    # Finding fuzzy level using GetLevelByName() function:
 
     print('Finding level by name with exact matching:')
 
@@ -932,14 +923,14 @@ if __name__ == "__main__":
     res = uniFScale.GetLevelByName('Highest', exactMatching=False)
     print("GetLevelByName('Highest', {}) = {}, {}".format(uniFScale.name, res['name'] if res else 'None', res['fSet'] if res else 'None'))
 
-    ## --- Work with fuzzy logic operators:
+    # --- Work with fuzzy logic operators:
 
-    ## Checks that number is in [0, 1]:
+    # Checks that number is in [0, 1]:
 
     print('IsCorrectFuzzyNumberValue(0.5) =', IsCorrectFuzzyNumberValue(0.5))
     print('IsCorrectFuzzyNumberValue(1.1) =', IsCorrectFuzzyNumberValue(1.1))
 
-    ## Calculates result of fuzzy NOT, fuzzy NOT with alpha parameter and parabolic fuzzy NOT operations:
+    # Calculates result of fuzzy NOT, fuzzy NOT with alpha parameter and parabolic fuzzy NOT operations:
 
     print('FNOT(0.25) =', FuzzyNOT(0.25))
     print('FNOT(0.25, alpha=0.25) =', FuzzyNOT(0.25, alpha=0.25))
@@ -949,40 +940,40 @@ if __name__ == "__main__":
     print('FNOTParabolic(0.25, alpha=0.25) =', FuzzyNOTParabolic(0.25, alpha=0.25))
     print('FNOTParabolic(0.25, alpha=0.75) =', FuzzyNOTParabolic(0.25, alpha=0.75))
 
-    ## Calculates result of fuzzy AND/OR operations:
+    # Calculates result of fuzzy AND/OR operations:
 
     print('FuzzyAND(0.25, 0.5) =', FuzzyAND(0.25, 0.5))
     print('FuzzyOR(0.25, 0.5) =', FuzzyOR(0.25, 0.5))
 
-    ## Calculates result of T-Norm operations, where T-Norm is one of conjunctive operators - logic, algebraic, boundary, drastic:
+    # Calculates result of T-Norm operations, where T-Norm is one of conjunctive operators - logic, algebraic, boundary, drastic:
 
     print("TNorm(0.25, 0.5, 'logic') =", TNorm(0.25, 0.5, normType='logic'))
     print("TNorm(0.25, 0.5, 'algebraic') =", TNorm(0.25, 0.5, normType='algebraic'))
     print("TNorm(0.25, 0.5, 'boundary') =", TNorm(0.25, 0.5, normType='boundary'))
     print("TNorm(0.25, 0.5, 'drastic') =", TNorm(0.25, 0.5, normType='drastic'))
 
-    ## Calculates result of S-coNorm operations, where S-coNorm is one of disjunctive operators - logic, algebraic, boundary, drastic:
+    # Calculates result of S-coNorm operations, where S-coNorm is one of disjunctive operators - logic, algebraic, boundary, drastic:
 
     print("SCoNorm(0.25, 0.5, 'logic') =", SCoNorm(0.25, 0.5, normType='logic'))
     print("SCoNorm(0.25, 0.5, 'algebraic') =", SCoNorm(0.25, 0.5, normType='algebraic'))
     print("SCoNorm(0.25, 0.5, 'boundary') =", SCoNorm(0.25, 0.5, normType='boundary'))
     print("SCoNorm(0.25, 0.5, 'drastic') =", SCoNorm(0.25, 0.5, normType='drastic'))
 
-    ## Calculates result of T-Norm operations for N numbers, N > 2:
+    # Calculates result of T-Norm operations for N numbers, N > 2:
 
     print("TNormCompose(0.25, 0.5, 0.75, 'logic') =", TNormCompose(0.25, 0.5, 0.75, normType='logic'))
     print("TNormCompose(0.25, 0.5, 0.75, 'algebraic') =", TNormCompose(0.25, 0.5, 0.75, normType='algebraic'))
     print("TNormCompose(0.25, 0.5, 0.75, 'boundary') =", TNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("TNormCompose(0.25, 0.5, 0.75, 'drastic') =", TNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-    ## Calculates result of S-coNorm operations for N numbers, N > 2:
+    # Calculates result of S-coNorm operations for N numbers, N > 2:
 
     print("SCoNormCompose(0.25, 0.5, 0.75, 'logic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='logic'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'algebraic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='algebraic'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'boundary') =", SCoNormCompose(0.25, 0.5, 0.75, normType='boundary'))
     print("SCoNormCompose(0.25, 0.5, 0.75, 'drastic') =", SCoNormCompose(0.25, 0.5, 0.75, normType='drastic'))
 
-    ## --- Work with other methods:
+    # --- Work with other methods:
     print("Converting some strings to range of sorted unique numbers:")
     print('String "1,5" converted to:', DiapasonParser("1,5"))
     print('String "1-5" converted to:', DiapasonParser("1-5"))

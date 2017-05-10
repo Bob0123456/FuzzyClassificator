@@ -1,4 +1,4 @@
-__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
+# -*- coding: utf-8 -*-
 
 from pybrain.rl.learners.directsearch.directsearch import DirectSearchLearner
 from pybrain.rl.learners.learner import DataSetLearner, ExploringLearner
@@ -8,6 +8,8 @@ from pybrain.rl.explorers.continuous.normal import NormalExplorer
 from pybrain.datasets.dataset import DataSet
 from pybrain.structure.networks import FeedForwardNetwork
 from pybrain.structure.connections import IdentityConnection
+
+__author__ = 'Thomas Rueckstiess, ruecksti@in.tum.de'
 
 
 class LoglhDataSet(DataSet):
@@ -39,7 +41,6 @@ class PolicyGradientLearner(DirectSearchLearner, DataSetLearner, ExploringLearne
         # network to tie module and explorer together
         self.network = None
 
-
     def _setLearningRate(self, alpha):
         """ pass the alpha value through to the gradient descent object """
         self.gd.alpha = alpha
@@ -49,13 +50,13 @@ class PolicyGradientLearner(DirectSearchLearner, DataSetLearner, ExploringLearne
 
     learningRate = property(_getLearningRate, _setLearningRate)
 
-    def _setModule(self, module):
+    def _setModule(self, moduleParam):
         """ initialize gradient descender with module parameters and
             the loglh dataset with the outdim of the module. """
-        self._module = module
+        self._module = moduleParam
 
         # initialize explorer
-        self._explorer = NormalExplorer(module.outdim)
+        self._explorer = NormalExplorer(moduleParam.outdim)
 
         # build network
         self._initializeNetwork()
@@ -81,7 +82,6 @@ class PolicyGradientLearner(DirectSearchLearner, DataSetLearner, ExploringLearne
 
     explorer = property(_getExplorer, _setExplorer)
 
-
     def _initializeNetwork(self):
         """ build the combined network consisting of the module and
             the explorer and initializing the log likelihoods dataset.
@@ -98,12 +98,14 @@ class PolicyGradientLearner(DirectSearchLearner, DataSetLearner, ExploringLearne
         # initialize loglh dataset
         self.loglh = LoglhDataSet(self.network.paramdim)
 
-
     def learn(self):
         """ calls the gradient calculation function and executes a step in direction
             of the gradient, scaled with a small learning rate alpha. """
-        assert self.dataset != None
-        assert self.module != None
+        if self.dataset is None:
+            raise Exception("Dataset must be not None!")
+
+        if self.module is None:
+            raise Exception("Module must be not None!")
 
         # calculate the gradient with the specific function from subclass
         gradient = self.calculateGradient()

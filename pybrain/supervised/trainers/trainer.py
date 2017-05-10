@@ -1,7 +1,8 @@
-__author__ = 'Tom Schaul, tom@idsia.ch'
-__version__ = '$Id$'
+# -*- coding: utf-8 -*-
 
 from pybrain.utilities import Named, abstractMethod
+
+__author__ = 'Tom Schaul, tom@idsia.ch'
 
 
 class Trainer(Named):
@@ -19,8 +20,11 @@ class Trainer(Named):
         """Associate the given dataset with the trainer."""
         self.ds = dataset
         if dataset:
-            assert dataset.indim == self.module.indim
-            assert dataset.outdim == self.module.outdim
+            if dataset.indim != self.module.indim:
+                raise Exception("{} not equals to {}".format(str(dataset.indim), str(self.module.indim)))
+
+            if dataset.outdim != self.module.outdim:
+                raise Exception("{} not equals to {}".format(str(dataset.outdim), str(self.module.outdim)))
 
     def trainOnDataset(self, dataset, *args, **kwargs):
         """Set the dataset and train.
@@ -36,8 +40,6 @@ class Trainer(Named):
         for dummy in range(epochs):
             self.train(*args, **kwargs)
 
-    def train(self):
+    def train(self, *args, **kwargs):
         """Train on the current dataset, for a single epoch."""
         abstractMethod()
-
-

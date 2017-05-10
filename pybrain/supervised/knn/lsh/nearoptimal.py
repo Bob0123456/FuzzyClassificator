@@ -178,7 +178,7 @@ class MultiDimHash(object):
 
         candidates = self._findKnnCandidates(point)
 
-        def sortKey((point_, satellite_)):
+        def sortKey(point_):
             distance = point - point_
             return - dot(distance.T, distance)
 
