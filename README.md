@@ -5,12 +5,13 @@ FuzzyClassificator
 
 *Index:*
 - [Introduction](#Chapter_1)
-- [How to use](#Chapter_2)
+- [How to work with FuzzyClassificator](#Chapter_2)
     - [Presets](#Chapter_2_1)
-    - [Usage](#Chapter_2_2)
-        - [Optional arguments](#Chapter_2_2_1)
-        - [Work modes](#Chapter_2_2_2)
-        - [Usage examples](#Chapter_2_2_3)
+    - [Install](#Chapter_2_2)
+    - [Usage](#Chapter_2_3)
+        - [Optional arguments](#Chapter_2_3_1)
+        - [Work modes](#Chapter_2_3_2)
+        - [Usage examples](#Chapter_2_3_3)
 - [Preparing data](#Chapter_3)
     - [ethalons.dat](#Chapter_3_1)
         - [Example of ethalons.dat](#Chapter_3_1_1)
@@ -42,8 +43,8 @@ How does it work? Let see process scheme below.
 ![Two Stage of Classification Process](classification_process.png "Two Stage of Classification Process")
 
 
-<a name="Chapter_2"></a>How to use
-----------------------------------
+<a name="Chapter_2"></a>How to work with FuzzyClassificator
+-----------------------------------------------------------
 
 FuzzyClassificator uses ethalons.dat (default) as learning data and candidates.dat (default) for classifying data (See "Preparing data" chapter).
 Work contains two steps:
@@ -61,15 +62,40 @@ The simplest way to use FuzziClassificator without some troubles is to install P
 
 [Anaconda](https://www.continuum.io/downloads) is the open data science platform powered by Python. The open source version of Anaconda is a high performance distribution of Python and includes most of the popular Python packages for scientific calculation.
 
-In all examples below, we used an Anaconda Python interpreter when you saw keyword "python".
+In all examples below, we used an Anaconda Python interpreter when you saw keyword "python" or "pip".
 
 
-<a name="Chapter_2_2"></a>**Usage**
+<a name="Chapter_2_2"></a>**Install**
 
+You can install FuzzyClassificator using standart pip from Anaconda Python interpreter:
+
+    pip install FuzzyClassificator [--upgrade] [--pre]
+    
+or using standart setuptools from Anaconda Python interpreter to build local version:
+
+    git clone https://github.com/devopshq/FuzzyClassificator.git FuzzyClassificator
+    cd FuzzyClassificator
+    python setup.py install
+
+After installing you can check the version of the FuzzyClassificator:
+
+    FuzzyClassificator --version
+
+
+<a name="Chapter_2_3"></a>**Usage**
+
+Run program through Anaconda Python interpreter: 
+    
     python FuzzyClassificator.py [options] [--learn]|[--classify] [Network_Options]
 
+or like command-line script if installed via pip:
 
-<a name="Chapter_2_2_1"></a>***Optional arguments***
+    FuzzyClassificator [options] [--learn]|[--classify] [Network_Options]
+
+In all the examples below, we will assume that the FuzzyClassificator installed via pip.
+
+
+<a name="Chapter_2_3_1"></a>***Optional arguments***
 
     -h, --help
         Show help message and exit.
@@ -134,7 +160,7 @@ In all examples below, we used an Anaconda Python interpreter when you saw keywo
         This parameter affected training speed.
 
 
-<a name="Chapter_2_2_2"></a>***Work modes***
+<a name="Chapter_2_3_2"></a>***Work modes***
 
 Learning Mode:
     
@@ -176,17 +202,15 @@ Classifying Mode:
         }
 
 
-<a name="Chapter_2_2_3"></a>***Usage examples***
+<a name="Chapter_2_3_3"></a>***Usage examples***
 
 Start learning with user's ethalon data file and neuronet options Config=(3,[3,2],2), 10 epochs, 0.05 learning rate and 0.05 momentum, epsilon is 0.1 and stop learning if errors less than 10%, update information in log every epochs and reload previous network for re-train:
 
-    python FuzzyClassificator.py --ethalons ethalons.dat --separator=TAB --debug-level=DEBUG --update 1 --reload --learn config=3,3,2,2 epochs=10 rate=0.05 momentum=0.05 epsilon=0.1 stop=10
+    FuzzyClassificator --ethalons ethalons.dat --separator=TAB --debug-level=DEBUG --update 1 --reload --learn config=3,3,2,2 epochs=10 rate=0.05 momentum=0.05 epsilon=0.1 stop=10
 
 Classify all candidates from file candidates.dat and show result in report.txt:
 
-    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
-
-Where 'python' is full path to Pyzo Python 3.3.2 interpreter.
+    FuzzyClassificator --candidates candidates.dat --network network.xml --report report.txt --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
 
 
 <a name="Chapter_3"></a>Preparing data
@@ -248,11 +272,11 @@ To classify each of input vectors You must to use --classify key. All columns ar
 
 If you trained Neuronet with command:
 
-    python FuzzyClassificator.py --ethalons ethalons.dat --learn config=3,3,2,2 epochs=1000 rate=0.1 momentum=0.05
+    FuzzyClassificator --ethalons ethalons.dat --learn config=3,3,2,2 epochs=1000 rate=0.1 momentum=0.05
 
 And then you classificated candidates vectors with command:
 
-    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt --classify config=3,3,2,2
+    FuzzyClassificator --candidates candidates.dat --network network.xml --report report.txt --classify config=3,3,2,2
 
 Then you will get the *report.text* file with information that looks like this:
 
@@ -316,9 +340,9 @@ Some examples are below.
 
 When you run Learning mode in CLI, for example:
 
-    python FuzzyClassificator.py --debug-level=info -u 1 --learn config=3,3,2,2 epochs=100 rate=0.5 momentum=0.5 epsilon=0.05 stop=1
+    FuzzyClassificator --debug-level=info -u 1 --learn config=3,3,2,2 epochs=100 rate=0.5 momentum=0.5 epsilon=0.05 stop=1
 
-Also you can run the same Learning mode command using API:
+also you can run the same Learning mode command using API:
 
     import FuzzyClassificator as FC
     import FCLogger
@@ -342,9 +366,9 @@ Also you can run the same Learning mode command using API:
 
 When you run Classifying mode in CLI, for example:
 
-    python FuzzyClassificator.py --candidates candidates.dat --network network.xml --report report.txt  --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
+    FuzzyClassificator --candidates candidates.dat --network network.xml --report report.txt --separator=TAB --debug-level=DEBUG --classify config=3,3,2,2
 
-Also you can run the same Classifying mode command using API:
+also you can run the same Classifying mode command using API:
 
     import FuzzyClassificator as FC
     from FCLogger import SetLevel
