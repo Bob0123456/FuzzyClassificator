@@ -27,6 +27,10 @@ def Version(onlyPrint=False):
         version = pkg_resources.get_distribution('FuzzyClassificator').version
 
     except Exception:
+        if onlyPrint:
+            FCLogger.level = 50
+            print('unknown')
+
         return 'unknown'
 
     if onlyPrint:
