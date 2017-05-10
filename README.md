@@ -38,7 +38,7 @@ FuzzyClassificator
 
 This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.
 
-How does it work? Let see process scheme below.
+How does it work? Let see the process scheme below.
 
 ![Two Stage of Classification Process](classification_process.png "Two Stage of Classification Process")
 
@@ -219,7 +219,7 @@ Classify all candidates from file candidates.dat and show result in report.txt:
 
 <a name="Chapter_3_1"></a>**ethalons.dat**
 
-This is default file with ethalon data set. This file contains tab-delimited data (by default) that looks like this:
+This is default file with ethalon dataset. This file contains tab-delimited data (by default) that looks like this:
 
     <first header line with column names> 
     and then some strings contains real or fuzzy values:
@@ -238,7 +238,7 @@ For each input vector level of membership in the class characterized by the outp
     0.5     0.6     High    Max               Min
     0.6     0.7     Max     Max               Min
 
-For training on this data set use --learn key with config parameter, for example:
+For training on this dataset use learn key with parameters:
 
     --learn config=3,3,2,2 
 
@@ -248,7 +248,7 @@ dimension of output vector is 2, and the middle "3,2" parameters means that neur
 
 <a name="Chapter_3_2"></a>**candidates.dat**
 
-This is default file with data set for classifying. This file contains tab-delimited data (by default) that looks like this:
+This is default file with dataset for classifying. This file contains tab-delimited data (by default) that looks like this:
 
     <first header line with column names>
     and then some strings contains real or fuzzy values:
@@ -268,17 +268,15 @@ This is default file with data set for classifying. This file contains tab-delim
 <a name="Chapter_4"></a>Report of classificating
 ------------------------------------------------
 
-To classify each of input vectors You must to use --classify key. All columns are used as values of input vectors.
-
 If you trained Neuronet with command:
 
     FuzzyClassificator --ethalons ethalons.dat --learn config=3,3,2,2 epochs=1000 rate=0.1 momentum=0.05
 
-And then you classificated candidates vectors with command:
+and then you classificated candidates vectors with command:
 
     FuzzyClassificator --candidates candidates.dat --network network.xml --report report.txt --classify config=3,3,2,2
 
-Then you will get the *report.text* file with information that looks like this:
+then you will get the *report.text* file with information that looks like this:
 
     Neuronet: x:\work\projects\FuzzyClassificator_dohq\network.xml
 
