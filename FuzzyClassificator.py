@@ -559,7 +559,7 @@ def Main(learnParameters=None, classifyParameters=None):
     global reloadNetworkFromFile
     global epochsToUpdate
 
-    notAPI = False if learnParameters or classifyParameters else False  # check if API or CLI work mode
+    notAPI = False if learnParameters or classifyParameters else True  # check if API or CLI work mode
     args = ParseArgsMain(notAPI)  # parse another CLI parameters if they was
     exitCode = 0
 
