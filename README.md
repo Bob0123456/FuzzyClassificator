@@ -17,7 +17,7 @@ FuzzyClassificator
         - [Example of ethalons.dat](#Chapter_3_1_1)
     - [candidates.dat](#Chapter_3_2)
         - [Example of candidates.dat](#Chapter_3_2_1)
-- [Report of classificating](#Chapter_4)
+- [Report of classification](#Chapter_4)
 - [Work with API](#Chapter_5)
     - [FuzzyClassificator.py](#Chapter_5_1)
         - [API example to run Learning mode](#Chapter_5_1_1)
@@ -265,7 +265,7 @@ This is default file with dataset for classifying. This file contains tab-delimi
     0.76    0.79    Max
 
 
-<a name="Chapter_4"></a>Report of classificating
+<a name="Chapter_4"></a>Report of classification
 ------------------------------------------------
 
 If you trained Neuronet with command:
@@ -306,9 +306,9 @@ then you will get the *report.text* file with information that looks like this:
 
 This is main module which realizes user command-line interaction. Main methods are *LearningMode()* and *ClassifyingMode()* which provide similar program modes. The module provide user interface that implemented in PyBrainLearning.py.
 
-API use Main() function to work with both mode. The learnParameters in Main() used first and classifyParameters used second. If some of them defined they used with high priority than CLI parameters.
+API use *Main()* function to work with both mode. The learnParameters in *Main()* used first and classifyParameters used second. If some of them defined they used with high priority than CLI parameters.
 
-Also you can use API Main() function to run Classify mode right after Learning mode.
+Also you can use API *Main()* function to run Classify mode right after Learning mode.
 
 Learning mode contain steps realized by *LearningMode()*:
 
