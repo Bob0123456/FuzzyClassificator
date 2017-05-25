@@ -70,6 +70,7 @@ def ParseArgsMain(notAPI=True):
 
     parser.description = 'FuzzyClassificator version: {}. This program uses neural networks to solve classification problems, and uses fuzzy sets and fuzzy logic to interpreting results. FuzzyClassificator provided under the MIT License.'.format(__version__)
     parser.epilog = 'See examples on GitHub: https://devopshq.github.io/FuzzyClassificator/'
+    parser.usage = 'FuzzyClassificator [options] [--learn]|[--classify] [Network_Options]'
 
     parser.add_argument('-v', '--version', action='store_true', help='Show current version of FuzzyClassificator.')
 
