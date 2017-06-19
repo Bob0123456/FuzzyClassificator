@@ -17,7 +17,7 @@ deploy:
   user: devopshq
   password:
     secure: "c59mB1I6teHzX5vSs1k2VfEyntkQU8Y7o7pwAusygj/5M9sIPeKcveOfbIHj2E1ltQFpPT3wF8quHmyETYvKPXdfggZsm7pxdx+KfrveiMpGwnxaGVPjIXSTA4FC2pXP7DQK3+yzc61U7OM1k0skGg8N6Qs7fdFWAGKL+o3S6uW5cYgutTaj8uh8L4a7rxxR5VxvfK3jw5yLLnd7EWMN9tngVm4L1jUZsUvDKis7i+MNNynhgO0bln5s/uj/IPt+5rghcsiqFIgnmcVH0Nxe/f8iYnzMXFVqVISpj+XcV0EQBMw0xGjEdNGrc2rkCy9zw2GmNxM+JaUyXV+eEln+4vGz7tbZrdwMdasre2AKQMX+4jlt38W6nUV26txwTFkQ03oRcntSR8acYy/9WxOufkRT9Br/E10F6Axoadwn2zzdQEc6iuzZ32BvgqmS/AV+IutLFbmqwu5Gma9jzWQ1olE6me68ZZYEqTFf+iDe8uzfLPHmSUeCqXiehlN8v8tNjKjk1JSrOmuAWvoPxr2DGHBImEPCGM8TxOLx9IoqDMF0nEwuOqTmlvtJqv+JrA8q+rpkjeqnXUCXuRfM8eDP//b4syMdC9D2w4TV9eMg7FIgXvB3zMLKxGxZHXdNiFFpg5PvWithxdZf1YNIgyGknL6A+OrUSqIAhw3vxTXSZRg="
-  distributions: sdist bdist_wheel
+  distributions: bdist_wheel
   on:
     all_branches: true
   skip_cleanup: true
