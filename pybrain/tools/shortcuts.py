@@ -1,8 +1,8 @@
-__author__ = 'Tom Schaul and Thomas Rueckstiess'
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 
 from itertools import chain
-import logging
 from sys import exit as errorexit
 from pybrain.structure.networks.feedforward import FeedForwardNetwork
 from pybrain.structure.networks.recurrent import RecurrentNetwork
@@ -12,10 +12,14 @@ from pybrain.structure.connections import FullConnection, IdentityConnection
 try:
     from arac.pybrainbridge import _RecurrentNetwork, _FeedForwardNetwork
 except ImportError as e:
-    logging.info("No fast networks available: %s" % e)
+    pass  # print("No fast networks available: %s" % e)
 
 
-class NetworkError(Exception): pass
+__author__ = 'Tom Schaul and Thomas Rueckstiess'
+
+
+class NetworkError(Exception):
+    pass
 
 
 def buildNetwork(*layers, **options):
@@ -35,14 +39,16 @@ def buildNetwork(*layers, **options):
     If the `fast` flag is set, faster arac networks will be used instead of the
     pybrain implementations."""
     # options
-    opt = {'bias': True,
-           'hiddenclass': SigmoidLayer,
-           'outclass': LinearLayer,
-           'outputbias': True,
-           'peepholes': False,
-           'recurrent': False,
-           'fast': False,
+    opt = {
+        'bias': True,
+        'hiddenclass': SigmoidLayer,
+        'outclass': LinearLayer,
+        'outputbias': True,
+        'peepholes': False,
+        'recurrent': False,
+        'fast': False,
     }
+
     for key in options:
         if key not in opt.keys():
             raise NetworkError('buildNetwork unknown option: %s' % key)
@@ -161,5 +167,4 @@ def _buildNetwork(*layers, **options):
     net.addOutputModule(layer)
     net.sortModules()
     return net
-
 
