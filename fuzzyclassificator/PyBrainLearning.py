@@ -15,14 +15,14 @@ import os
 import shutil
 from datetime import datetime, timedelta
 
-from pybrain.tools.shortcuts import buildNetwork
+from fuzzyclassificator.FuzzyRoutines import *
+
+from fuzzyclassificator.FCLogger import FCLogger
 from pybrain.datasets import SupervisedDataSet
 from pybrain.supervised.trainers import BackpropTrainer
-from pybrain.tools.customxml.networkwriter import NetworkWriter
 from pybrain.tools.customxml.networkreader import NetworkReader
-
-from FuzzyRoutines import *
-from FCLogger import FCLogger
+from pybrain.tools.customxml.networkwriter import NetworkWriter
+from pybrain.tools.shortcuts import buildNetwork
 
 
 class FuzzyNeuroNetwork(object):

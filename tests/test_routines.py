@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import FuzzyRoutines
+
+from fuzzyclassificator import FuzzyRoutines
 
 
 class TestBaseMethods():

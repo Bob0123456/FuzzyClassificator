@@ -10,11 +10,11 @@
 # Library contains some routines for work with fuzzy logic operators, fuzzy datasets and fuzzy scales.
 
 
-import math
 import copy
+import math
 import traceback
 
-from FCLogger import FCLogger
+from fuzzyclassificator.FCLogger import FCLogger
 
 
 def DiapasonParser(diapason):

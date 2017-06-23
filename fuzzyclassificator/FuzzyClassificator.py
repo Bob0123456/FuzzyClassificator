@@ -12,9 +12,9 @@
 
 import argparse
 
-from PyBrainLearning import *
-from FuzzyRoutines import *
-from FCLogger import *
+from fuzzyclassificator.PyBrainLearning import *
+
+from fuzzyclassificator.FCLogger import *
 
 
 def Version(onlyPrint=False):
