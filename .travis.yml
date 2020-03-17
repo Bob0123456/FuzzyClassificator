@@ -11,7 +11,7 @@ script:
   - ls -la
   - coverage run -m py.test tests
   - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  - echo "TODO python-codacy-coverage -r coverage.xml"
 deploy:
   provider: pypi
   user: devopshq
